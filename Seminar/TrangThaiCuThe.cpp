@@ -43,8 +43,40 @@ void KhoiTao::thongtinTrangThai() {
 	cout << "Trang thai KhoiTao\nDon hang can co toi thieu cac thong tin SDT,"
 		<<"DIACHI nguoi nhan va SOLUONG SAN PHAM de hoan tat khoi tao\n";
 }
+void XacNhan::doiTenNguoiNhan() {
+	cout << "Nhap vao ten nguoi nhan: \n";
+	string ten;
+	cin.ignore();
+	getline(cin, ten, '\n');
+	this->dh->datTenNguoiNhan(ten);
+}
+void XacNhan::doiSDTNguoiNhan() {
+	cout << "Nhap vao sdt nguoi nhan: \n";
+	string sdt;
+	cin.ignore();
+	getline(cin, sdt, '\n');
+	this->dh->datSDTNguoiNhan(sdt);
+}
+void XacNhan::doiDiaChiNhan() {
+	cout << "Nhap vao dia chi nhan: \n";
+	string dchi;
+	cin.ignore();
+	getline(cin, dchi, '\n');
+	this->dh->datDiaChiNhan(dchi);
+}
+void XacNhan::themSanPham() {
+	cout << "Nhap vao so luong san pham muon mua: \n";
+	int sl;
+	cin >> sl;
+	this->dh->datsoSanPham(sl);
+}
+void XacNhan::huyBoDH() {
+	dh.huyBoDH();
+}
+void XacNhan::thongtinTrangThai() {
+	cout << "Trang thai: Xac nhan" << endl;  
+}
 
-DangGiao::DangGiao(DonHang* DH) :TrangThai(DH) {}
 void DangGiao::doiTenNguoiNhan() {
 	cout << "Nhap vao ten nguoi nhan: \n";
 	string ten;
@@ -71,7 +103,6 @@ void DangGiao::huyBoDH() {
 void DangGiao::thongtinTrangThai() {
 	cout << "Trang thai dang giao" << endl; 
 }
-HoanThanh::HoanThanh(DonHang* DH) :TrangThai(DH) {}
 void HoanThanh::doiTenNguoiNhan() {
 	cout << "Don hang da giao thanh cong" << endl; 
 }
@@ -90,7 +121,6 @@ void HoanThanh::huyBoDH() {
 void HoanThanh::thongtinTrangThai() {
 	cout << "Trang thai: Da hoan thanh " << endl;
 }
-DaHuyBo::DaHuyBo(DonHang* DH) :TrangThai(DH) {}
 void DaHuyBo::doiTenNguoiNhan() {
 	cout << "Don hang da huy bo" << endl
 		<< "moi khach hang co the dat lai don khac" << endl;
