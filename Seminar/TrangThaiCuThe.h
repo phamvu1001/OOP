@@ -15,14 +15,12 @@ public:
 class XacNhan:public TrangThai {
 public:
 	XacNhan(DonHang* DH) :TrangThai(DH) {}
-	void doiTenNguoiNhan(){}
-	void doiSDTNguoiNhan(){}
-	void doiDiaChiNhan(){}
-	void themSanPham(){}
-	void huyBoDH(){}
-	void thongtinTrangThai() {
-		cout << "Xac nhan\n";
-	}
+	void doiTenNguoiNhan();
+	void doiSDTNguoiNhan();
+	void doiDiaChiNhan();
+	void themSanPham();
+	void huyBoDH();
+	void thongtinTrangThai();
 };
 class DangGiao :public TrangThai {
 public:
