@@ -11,8 +11,9 @@ public:
 	void themSanPham();
 	void huyBoDH();
 	void thongtinTrangThai();
+	void tuChuyenTT();
 };
-class XacNhan:public TrangThai {
+class XacNhan :public TrangThai {
 public:
 	XacNhan(DonHang* DH) :TrangThai(DH) {}
 	void doiTenNguoiNhan();
@@ -21,6 +22,7 @@ public:
 	void themSanPham();
 	void huyBoDH();
 	void thongtinTrangThai();
+	void tuChuyenTT();
 };
 class DangGiao :public TrangThai {
 public:
@@ -31,7 +33,7 @@ public:
 	void themSanPham();
 	void huyBoDH();
 	void thongtinTrangThai();
-
+	void tuChuyenTT();
 };
 class HoanThanh :public TrangThai {
 public:
@@ -42,6 +44,7 @@ public:
 	void themSanPham();
 	void huyBoDH();
 	void thongtinTrangThai();
+	void tuChuyenTT();
 };
 class DaHuyBo :public TrangThai {
 public:
@@ -52,5 +55,6 @@ public:
 	void themSanPham();
 	void huyBoDH();
 	void thongtinTrangThai();
+	void tuChuyenTT();
 };
 #endif // !_TRANGTHAICUTHE_H

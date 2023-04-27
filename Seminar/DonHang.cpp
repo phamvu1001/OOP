@@ -73,20 +73,26 @@ void DonHang::datDiaChiNhan(string dchi) {
 void DonHang::datsoSanPham(int soluong) {
 	this->SoLuongSP = soluong;
 }
-
+void DonHang::tuChuyenTT() {
+	this->trangthai->tuChuyenTT();
+}
 void DonHang::thaoTacThayDoi() {
-	while (true) {
+	while (dynamic_cast<DaHuyBo*>(this->trangthai)==nullptr) {
 		this->xuatThongTin();
-		int lc;
 		cout << "1-Nhap ten nguoi nhan\n";
 		cout << "2-Nhap sdt nguoi nhan\n";
 		cout << "3-Nhap dia chi nhan hang\n";
 		cout << "4-Nhap so luong san pham muon mua\n";
 		cout << "5-Huy bo don hang\n";
+		cout << "6-Khong thuc hien thay doi\n";
+		int lc = 0;
 		do {
 			cout << "Moi nhap lua chon: ";
 			cin >> lc;
-		} while (lc > 5 || lc < 1);
+		} while (lc > 6 || lc < 1);
+		if (dynamic_cast<HoanThanh*>(this->trangthai) != nullptr && lc == 6) {
+			break;
+		}
 		switch(lc){
 			case 1:
 				this->doiTenNguoiNhan();
@@ -103,8 +109,12 @@ void DonHang::thaoTacThayDoi() {
 			case 5:
 				this->huyBoDH();
 				break;
+			case 6:
+				this->tuChuyenTT();
+				break;
 		}
 		system("pause");
 		system("cls");
 	}
+	this->xuatThongTin();
 }

@@ -21,6 +21,7 @@ public:
 	void datTrangThai(TrangThai* tt);
 	int tinhGiaTien();
 	void thongtinTrangThai();
+	void tuChuyenTT();
 
 	void doiTenNguoiNhan();
 	void doiSDTNguoiNhan();

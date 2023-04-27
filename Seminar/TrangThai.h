@@ -10,6 +10,7 @@ public:
 	TrangThai(DonHang* don) {
 		this->dh = don;
 	}
+	virtual void tuChuyenTT()=0;
 	virtual void doiTenNguoiNhan()=0;
 	virtual void doiSDTNguoiNhan()=0;
 	virtual void doiDiaChiNhan()=0;
