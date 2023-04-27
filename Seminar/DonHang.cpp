@@ -79,6 +79,7 @@ void DonHang::tuChuyenTT() {
 void DonHang::thaoTacThayDoi() {
 	while (dynamic_cast<DaHuyBo*>(this->trangthai)==nullptr) {
 		this->xuatThongTin();
+		cout << "----------------\n";
 		cout << "1-Nhap ten nguoi nhan\n";
 		cout << "2-Nhap sdt nguoi nhan\n";
 		cout << "3-Nhap dia chi nhan hang\n";
