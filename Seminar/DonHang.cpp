@@ -27,6 +27,7 @@ void DonHang::xuatThongTin() {
 	this->trangthai->thongtinTrangThai();
 }
 void DonHang::datTrangThai(TrangThai* tt) {
+	delete this->trangthai;
 	this->trangthai = tt;
 }
 int DonHang::tinhGiaTien() {
