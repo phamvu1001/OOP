@@ -102,7 +102,10 @@ void DangGiao::thongtinTrangThai() {
 	cout << "Trang thai: Dang giao" << endl;
 }
 void DangGiao::tuChuyenTT() {
+	cout << "Dang giao don hang......\n";
+	Sleep(500);
 	this->dh->datTrangThai(new HoanThanh(this->dh));
+	cout << "Giao thanh cong! Don hang da toi\n";
 }
 
 

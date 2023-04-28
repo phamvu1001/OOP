@@ -1,6 +1,8 @@
 #ifndef _TRANGTHAICUTHE_H
 #define _TRANGTHAICUTHE_H
 #include "TrangThai.h"
+#include <stdio.h>
+#include <Windows.h>
 using namespace std;
 class KhoiTao :public TrangThai {
 public:
