@@ -92,6 +92,7 @@ void DonHang::thaoTacThayDoi() {
 			cin >> lc;
 		} while (lc > 6 || lc < 1);
 		if (dynamic_cast<HoanThanh*>(this->trangthai) != nullptr && lc == 6) {
+			system("cls");
 			break;
 		}
 		switch(lc){
