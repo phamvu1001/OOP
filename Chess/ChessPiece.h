@@ -9,7 +9,7 @@ class ChessPiece
 {
 protected:
 	//Color of the piece, 1 Upper case character, Ex: "W" for White
-	char Color;
+	char color;
 
 public:
 	//constructors
@@ -18,18 +18,24 @@ public:
 
 	//deconstructor
 		virtual ~ChessPiece() {};
+    //getter
+        char getColor();
 
 	//
-		virtual bool isLegalMove(int, int, int, int, ChessPiece** cb) = 0;
+		virtual bool isLegalMove(int, int, int, int, ChessPiece* cp[8][8]) = 0;
 };
 
 ChessPiece::ChessPiece()
 {
-	this->Color = 'W';
+	this->color = 'W';
 }
 
-ChessPiece::ChessPiece(char Color) {
-	this->Color = Color;
+ChessPiece::ChessPiece(char color) {
+	this->color = color;
+}
+
+char ChessPiece::getColor() {
+    return this->color;
 }
 
 #endif // ! CHESSPIECE_H
