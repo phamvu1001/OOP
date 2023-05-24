@@ -2,7 +2,6 @@
 #define CHESSPIECE_H
 
 #include <iostream>
-#include <ChessBoard.h>
 
 using namespace std;
 
@@ -21,7 +20,7 @@ public:
 		virtual ~ChessPiece() {};
 
 	//
-		virtual bool isLegalMove(int, int, int, int, ChessBoard* cb) = 0;
+		virtual bool isLegalMove(int, int, int, int, ChessPiece** cb) = 0;
 };
 
 ChessPiece::ChessPiece()
