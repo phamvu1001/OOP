@@ -6,9 +6,11 @@
 
 class ChessPiece
 {
+private:
+    char color;
 public:
     char color;
-    ChessPiece(char color) : color(color) {}
+    ChessPiece(char color);
     virtual ~ChessPiece() {}
     char getColor() {return this->color;}
     virtual bool isLegalMove(int, int, int, int, ChessBoard* cb) = 0;
