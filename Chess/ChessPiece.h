@@ -9,7 +9,6 @@ class ChessPiece
 protected:
     char color;
 public:
-    char color;
     ChessPiece(char color);
     virtual ~ChessPiece() {}
     char getColor() {return this->color;}
