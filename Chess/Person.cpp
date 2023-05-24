@@ -1,5 +1,5 @@
 #include "Person.h"
-#include "ChessPiece.h"
+#include "ChessBoard.h"
 
 Person::Person(string name, char color) : Player(name, color) {
 
