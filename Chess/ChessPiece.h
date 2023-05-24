@@ -6,7 +6,7 @@
 
 class ChessPiece
 {
-private:
+protected:
     char color;
 public:
     char color;
