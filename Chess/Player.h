@@ -16,8 +16,8 @@ public:
     void setColor(char color);
     string getName();
     char getColor();
-    virtual void selectChessPiece(ChessBoard* cb, int& srcRow, int& srcRol) = 0;
-    virtual void selectDest(ChessBoard* cb, int& destRow, int& destCol) = 0;
+    virtual void selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) = 0;
+    virtual void selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, int& destCol) = 0;
 };
 
 #endif 
