@@ -2,8 +2,12 @@
 #define PLAYER_H
 
 #include "ChessBoard.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
 class Player {
+protected:
     string name;
     char color;
 public:
@@ -12,8 +16,8 @@ public:
     void setColor(char color);
     string getName();
     char getColor();
-    virtual void selectChessPiece(ChessBoard* cb, int& row, int& col) = 0;
-    virtual void selectDest(ChessBoard* cb, int& row, int& col) = 0;
+    virtual void selectChessPiece(ChessBoard* cb, int& srcRow, int& srcRol) = 0;
+    virtual void selectDest(ChessBoard* cb, int& destRow, int& destCol) = 0;
 };
 
 #endif 
