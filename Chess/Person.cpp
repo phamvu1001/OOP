@@ -39,7 +39,7 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
     string endMove;
     int square_num;
     bool inRange = true;
-    bool LegalMove = true;
+    // bool LegalMove = true;
     
     do {
         cout << "Move to(A1->H8): ";
@@ -56,11 +56,11 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
             destRow = endMove[1] - 49; // 1-8 <=> 0-7
             destCol = endMove[0] - 65; // A-H <=> 0-7
             ChessPiece* dest = cb->cp[destRow][destCol];
-            // truong hop vi tri di chuyen toi khong hop le thi nhap lai
-            if(dest->isLegalMove(srcRow, srcCol, destRow, destCol, cb->cp) == false) {
-                cout << "Invalid Move!" << endl;
-                LegalMove = false;    
-            }
+            // // truong hop vi tri di chuyen toi khong hop le thi nhap lai
+            // if(dest->isLegalMove(srcRow, srcCol, destRow, destCol, cb->cp) == false) {
+            //     cout << "Invalid Move!" << endl;
+            //     LegalMove = false;    
+            // }
         }
-    } while (inRange == false || LegalMove == false);
+    } while (inRange == false); //(inRange == false || LegalMove == false);
 }

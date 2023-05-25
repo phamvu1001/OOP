@@ -10,32 +10,17 @@ class ChessPiece
 protected:
 	//Color of the piece, 1 Upper case character, Ex: "W" for White
 	char color;
-
 public:
 	//constructors
 		ChessPiece();
 		ChessPiece(char Color);
-
 	//deconstructor
 		virtual ~ChessPiece() {};
     //getter
         char getColor();
-
-	//
+		virtual char getPiece() = 0;
+	// logic check
 		virtual bool isLegalMove(int, int, int, int, ChessPiece* cp[8][8]) = 0;
 };
-
-ChessPiece::ChessPiece()
-{
-	this->color = 'W';
-}
-
-ChessPiece::ChessPiece(char color) {
-	this->color = color;
-}
-
-char ChessPiece::getColor() {
-    return this->color;
-}
 
 #endif // ! CHESSPIECE_H
