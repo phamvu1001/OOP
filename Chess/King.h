@@ -8,10 +8,15 @@ using namespace std;
 class King: public ChessPiece
 {
 public:
-	King();
-	~King();
-	bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece** cb);
+	//constructors
+	King() {};
+	King(char color) : ChessPiece(color) {};
 
+	//deconstructor
+	~King() {};
+
+	//check if the move is legal
+	bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]);
 
 };
 

@@ -8,9 +8,15 @@ using namespace std;
 class Bishop: public ChessPiece
 {
 public:
-	Bishop();
-	~Bishop();
-	bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece** cb);
+	//constructors
+	Bishop() {};
+	Bishop(char color) : ChessPiece(color) {};
+
+	//deconstructor
+	~Bishop() {};
+
+	//check if the move is legal
+	bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]);
 
 };
 
