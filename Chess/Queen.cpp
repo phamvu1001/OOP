@@ -1,5 +1,11 @@
 ﻿#include "Queen.h"
 
+char Queen::getPiece() {
+    return 'Q';
+}
+
+
+
 bool Queen::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]) {
     //Kiểm tra: Bước đi có hợp lệ với luật của quân cờ không?
     int d_x = des_x - cur_x;
@@ -49,11 +55,9 @@ bool Queen::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* 
 
                 if (cp[cur_x][y] != 0)
                     return false;
+            }
         }
         return true;
     }
-
     return false;
 }
-
-/*   */

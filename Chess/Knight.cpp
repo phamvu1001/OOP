@@ -1,5 +1,10 @@
 ﻿#include "Knight.h"
 
+
+char Knight::getPiece() {
+    return 'k';
+}
+
 bool Knight::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]) {
 
     //Kiểm tra: Bước đi có hợp lệ với luật của quân cờ không?
