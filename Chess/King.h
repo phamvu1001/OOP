@@ -2,6 +2,7 @@
 #define KING_H
 
 #include <iostream>
+#include <cstdlib>
 #include "ChessPiece.h"
 using namespace std;
 
