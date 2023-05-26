@@ -14,7 +14,7 @@ void Person::selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) {
     do {
         cout << "Select Chess Piece(A1 -> H8): ";
         cin >> startMove;
-        square_num = 8 * ((int)startMove[1] - 65) + (int)startMove[1] - 48; //A1 = 1, B2 = 10, H8 = 64
+        square_num = 8 * ((int)startMove[1] - 49) + (int)startMove[0] - 64; //A1 = 1, B2 = 10, H8 = 64
         // truong hop vi tri chon nam ngoai ban co
         if (startMove.length() != 2 || square_num < 1 || square_num > 64) {
             cout << "Invalid Chess Piece!" << endl;
@@ -43,7 +43,7 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
     do {
         cout << "Move to(A1->H8): ";
         cin >> endMove;
-        square_num = 8 * ((int)endMove[1] - 65) + (int)endMove[1] - 48; //A1 = 1, B2 = 10, H8 = 64
+        square_num = 8 * ((int)endMove[1] - 49) + (int)endMove[0] - 64; //A1 = 1, B2 = 10, H8 = 64
         // truong hop vi tri chon nam ngoai ban co
         if (endMove.length() != 2 || square_num < 1 || square_num > 64) {
             cout << "Invalid Move!" << endl;
