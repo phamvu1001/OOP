@@ -15,44 +15,44 @@ ChessBoard::ChessBoard()
 	}
 
 	// thiet lap quan den
-	cp[0][0] = new Castle('B');
-	cp[0][1] = new Knight('B');
-	cp[0][2] = new Bishop('B');
-	cp[0][3] = new Queen('B');
-	cp[0][4] = new King('B');
-	cp[0][5] = new Bishop('B');
-	cp[0][6] = new Knight('B');
-	cp[0][7] = new Castle('B');
+	cp[7][0] = new Castle('B');
+	cp[7][1] = new Knight('B');
+	cp[7][2] = new Bishop('B');
+	cp[7][3] = new Queen('B');
+	cp[7][4] = new King('B');
+	cp[7][5] = new Bishop('B');
+	cp[7][6] = new Knight('B');
+	cp[7][7] = new Castle('B');
 
 	// thiet lap tot den
-	cp[1][0] = new Pawn('B');
-	cp[1][1] = new Pawn('B');
-	cp[1][2] = new Pawn('B');
-	cp[1][3] = new Pawn('B');
-	cp[1][4] = new Pawn('B');
-	cp[1][5] = new Pawn('B');
-	cp[1][6] = new Pawn('B');
-	cp[1][7] = new Pawn('B');
+	cp[6][0] = new Pawn('B');
+	cp[6][1] = new Pawn('B');
+	cp[6][2] = new Pawn('B');
+	cp[6][3] = new Pawn('B');
+	cp[6][4] = new Pawn('B');
+	cp[6][5] = new Pawn('B');
+	cp[6][6] = new Pawn('B');
+	cp[6][7] = new Pawn('B');
 
 	// thiet lap hang tot trang
-	cp[6][0] = new Pawn('W');
-	cp[6][1] = new Pawn('W');
-	cp[6][2] = new Pawn('W');
-	cp[6][3] = new Pawn('W');
-	cp[6][4] = new Pawn('W');
-	cp[6][5] = new Pawn('W');
-	cp[6][6] = new Pawn('W');
-	cp[6][7] = new Pawn('W');
+	cp[1][0] = new Pawn('W');
+	cp[1][1] = new Pawn('W');
+	cp[1][2] = new Pawn('W');
+	cp[1][3] = new Pawn('W');
+	cp[1][4] = new Pawn('W');
+	cp[1][5] = new Pawn('W');
+	cp[1][6] = new Pawn('W');
+	cp[1][7] = new Pawn('W');
 
 	// thiet lap quan trang
-	cp[7][0] = new Castle('W');
-	cp[7][1] = new Knight('W');
-	cp[7][2] = new Bishop('W');
-	cp[7][3] = new Queen('W');
-	cp[7][4] = new King('W');
-	cp[7][5] = new Bishop('W');
-	cp[7][6] = new Knight('W');
-	cp[7][7] = new Castle('W');
+	cp[0][0] = new Castle('W');
+	cp[0][1] = new Knight('W');
+	cp[0][2] = new Bishop('W');
+	cp[0][3] = new Queen('W');
+	cp[0][4] = new King('W');
+	cp[0][5] = new Bishop('W');
+	cp[0][6] = new Knight('W');
+	cp[0][7] = new Castle('W');
 	//...
 }
 ChessBoard::~ChessBoard()
@@ -82,7 +82,7 @@ void ChessBoard::Print()
 			// print side border with numbering
 			if (row % 3 == 1)
 			{
-				cout << '-' << (char)('1' + 7 - squareRow) << '-';
+				cout << '-' << (char)('1'+7-squareRow) << '-';
 			}
 			else
 			{
@@ -128,7 +128,7 @@ void ChessBoard::Print()
 					int squareCol = col / squareWidth;
 					if ((col % 4) == 1)
 					{
-						cout << (char)(squareCol + 65);
+						cout << (char)(65 + squareCol);
 					}
 					else
 					{
