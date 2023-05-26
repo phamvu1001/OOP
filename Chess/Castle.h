@@ -8,7 +8,7 @@ class Castle : public ChessPiece
 public:
 	Castle(char color) : ChessPiece(color) {}
 	~Castle() {}
-	virtual char getPiece() {return 'C';}   
+	char getPiece() {return 'C';}   
 	bool isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]);    
 };
 
