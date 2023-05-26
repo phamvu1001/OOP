@@ -128,7 +128,7 @@ void ChessBoard::Print()
 					int squareCol = col / squareWidth;
 					if ((col % 4) == 1)
 					{
-						cout << (squareCol + 1);
+						cout << (char)(squareCol + 65);
 					}
 					else
 					{
