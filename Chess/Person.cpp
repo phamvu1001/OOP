@@ -23,8 +23,8 @@ void Person::selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) {
 
         if (LegalSelected == true) {
             //... xu ly de tra ve ket qua
-            srcRow = startMove[1] - 49; // 1-8 <=> 0-7
-            srcCol = startMove[0] - 65; // A-H <=> 0-7
+            srcRow = (int)startMove[1] - 49; // 1-8 <=> 0-7
+            srcCol = (int)startMove[0] - 65; // A-H <=> 0-7
             ChessPiece* currentPiece = cb->cp[srcRow][srcCol];
             // truong hop vi tri duoc chon la vi tri trong hoac la vi tri cua quan co doi thu
             if (currentPiece == 0 || (currentPiece->getColor() != this->color)) {
@@ -53,8 +53,8 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
         
         if (inRange == true) {
             //... xu ly de tra ve ket qua 
-            destRow = endMove[1] - 49; // 1-8 <=> 0-7
-            destCol = endMove[0] - 65; // A-H <=> 0-7
+            destRow = (int)endMove[1] - 49; // 1-8 <=> 0-7
+            destCol = (int)endMove[0] - 65; // A-H <=> 0-7
             ChessPiece* dest = cb->cp[destRow][destCol];
             // // truong hop vi tri di chuyen toi khong hop le thi nhap lai
             // if(dest->isLegalMove(srcRow, srcCol, destRow, destCol, cb->cp) == false) {
