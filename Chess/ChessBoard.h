@@ -1,31 +1,23 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 #include <iostream>
+#include "Castle.h"
+#include "Bishop.h"
+#include "King.h"
+#include "Pawn.h"
+#include "Knight.h"
+#include "Queen.h"
 using namespace std;
 
 class ChessBoard
 {
 public:
 	ChessPiece* cp[8][8];
-	ChessBoard()
-	{
-		// thiet lap quan den
-		cp[0][0] = new ChessPiece('B');
-		//...
-		// thiet lap quan trang
-		cp[7][7] = new ChessPiece('W');
-		//...
-	}
-	~ChessBoard()
-	{
-		//ham huy 
-		delete cp[0][0];
-		cp[0][0] = 0;
-		//...
-	}
-	void Print()
-	{
-		//...
-	}
+	ChessBoard();
+	~ChessBoard();
+	void Print();
+
+	bool isInCheck(char color);
+	bool canMove(char color);
 };
 #endif // !CHESSBOARD_H
