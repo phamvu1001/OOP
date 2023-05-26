@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(string name, char color){
+Player::Player(string name, char color) {
     this->name = name;
     this->color = color;
 }

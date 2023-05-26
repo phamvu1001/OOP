@@ -1,17 +1,13 @@
-#ifndef QUEEN_H
-#define QUEEN_H
+#ifndef _QUEEN_H
+#define _QUEEN_H
 
-#include <iostream>
-#include <cstdlib>
+#include <math.h>
 #include "ChessPiece.h"
-
-using namespace std;
 
 class Queen : public ChessPiece
 {
 public:
 	//constructors
-	Queen() {};
 	Queen(char color) : ChessPiece(color) {};
 
 	//deconstructor

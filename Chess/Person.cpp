@@ -19,7 +19,8 @@ void Person::selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) {
         if (startMove.length() != 2 || square_num < 1 || square_num > 64) {
             cout << "Invalid Chess Piece!" << endl;
             LegalSelected = false;
-        } else {
+        }
+        else {
             LegalSelected = true;
             //... xu ly de tra ve ket qua
             srcRow = (int)startMove[1] - 49; // 1-8 <=> 0-7
@@ -39,7 +40,7 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
     int square_num;
     bool inRange = true;
     // bool LegalMove = true;
-    
+
     do {
         cout << "Move to(A1->H8): ";
         cin >> endMove;
@@ -48,7 +49,8 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
         if (endMove.length() != 2 || square_num < 1 || square_num > 64) {
             cout << "Invalid Move!" << endl;
             inRange = false;
-        } else {
+        }
+        else {
             inRange == true;
             //... xu ly de tra ve ket qua 
             destRow = (int)endMove[1] - 49; // 1-8 <=> 0-7

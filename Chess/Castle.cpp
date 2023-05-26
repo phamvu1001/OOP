@@ -1,14 +1,14 @@
-#include "Castle.h"
+﻿#include "Castle.h"
 
 bool Castle::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]) {
 	ChessPiece* dest = cp[destRow][destCol];
-    // trường hợp ô đi đến là quân cờ cùng màu
-    if (dest->getColor() == this->getColor()) {
-        return false;
-    }
+	// trường hợp ô đi đến là quân cờ cùng màu
+	if (dest->getColor() == this->getColor()) {
+		return false;
+	}
 
 	// đi theo chiều ngang
-    if (srcRow == destRow)
+	if (srcRow == destRow)
 	{
 		// kiểm tra xem trên đường đi tới dest có quân cờ nào cản không
 		// nếu có thì không đi được -> return false
@@ -34,4 +34,4 @@ bool Castle::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, Chess
 		return true;
 	}
 	return false;
-}  
+}

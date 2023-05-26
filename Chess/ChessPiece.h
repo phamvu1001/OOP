@@ -12,15 +12,14 @@ protected:
 	char color;
 public:
 	//constructors
-		ChessPiece();
-		ChessPiece(char Color);
+	ChessPiece(char Color);
 	//deconstructor
-		virtual ~ChessPiece() {};
-    //getter
-        char getColor();
-		virtual char getPiece() = 0;
+	virtual ~ChessPiece() {};
+	//getter
+	char getColor();
+	virtual char getPiece() = 0;
 	// logic check
-		virtual bool isLegalMove(int, int, int, int, ChessPiece* cp[8][8]) = 0;
+	virtual bool isLegalMove(int, int, int, int, ChessPiece* cp[8][8]) = 0;
 };
 
 #endif // ! CHESSPIECE_H

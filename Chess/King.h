@@ -1,16 +1,12 @@
-#ifndef KING_H
-#define KING_H
-
-#include <iostream>
-#include <cstdlib>
+#ifndef _KING_H
+#define _KING_H
+#include <math.h>
 #include "ChessPiece.h"
-using namespace std;
 
-class King: public ChessPiece
+class King : public ChessPiece
 {
 public:
 	//constructors
-	King() {};
 	King(char color) : ChessPiece(color) {};
 
 	//deconstructor

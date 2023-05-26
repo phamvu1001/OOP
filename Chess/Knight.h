@@ -1,26 +1,22 @@
-#ifndef KNIGHT_H
-#define KNIGHT_H
-
-#include <iostream>
-#include <cstdlib>
+#ifndef _KNIGHT_H
+#define _KNIGHT_H
+#include <math.h>
 #include "ChessPiece.h"
-using namespace std;
 
-class  Knight: public ChessPiece
+class  Knight : public ChessPiece
 {
 public:
 	//constructors
-		Knight() {};
-		Knight(char color) : ChessPiece(color) {};
+	Knight(char color) : ChessPiece(color) {};
 
-	 //deconstructor
-		~Knight() {};
+	//deconstructor
+	~Knight() {};
 
 	//get piece type (Knight -> k)
-		char getPiece();
+	char getPiece();
 
 	//check if the move is legal
-		bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]);
+	bool isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]);
 
 };
 
