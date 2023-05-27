@@ -6,6 +6,7 @@
 #include <stack>
 #include "Person.h"
 #include <iostream>
+#include <Windows.h>
 using namespace std;
 class GameManager {
 	Player* player1, *player2;
@@ -27,7 +28,7 @@ public:
 	void Undo(stack<int> &undo_his,stack<ChessPiece*>&undo_capture);
 	void Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture);
 	void displayTurn(stack <int> &undo_his,	stack <ChessPiece*> &undo_capture);
-
+	void Replay();
 };
 
 #endif

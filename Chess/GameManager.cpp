@@ -213,6 +213,37 @@ void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_c
 	}
 	}
 }
+void GameManager::Replay() {
+	stack <int>move;
+	while (this->capturedChessPiece.size() > 0) {
+		ChessPiece* cp = this->capturedChessPiece.top();
+		this->capturedChessPiece.pop();
+		if (cp) {
+			delete cp;
+		}
+	}
+	while (this->move_his.size() > 0) {
+		move.push(this->move_his.top());
+		this->move_his.pop();
+	}
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->cb->cp[i][j]) {
+				delete this->cb->cp[i][j];
+			}
+		}
+	}
+	this->cb = new ChessBoard;
+	while (move.size() > 0) {
+		this->cb->Print();
+		Sleep(2000);
+		int step = move.top();
+		move.pop();
+		int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
+		this->Move(srcrow,srccol, desrow, descol);
+		system("cls");
+	}
+}
 void GameManager::handle() {
 	stack <int> undo_his;
 	stack <ChessPiece*> undo_capture;
@@ -233,4 +264,18 @@ void GameManager::handle() {
 		winner = this->player1;
 	}
 	cout << "The winner is "<<winner->getColor()<<": " << winner->getName() << endl;
+	cout << "Replay the game: \n";
+	int choice;
+	cout << "1.Yes\n";
+	cout << "2.No\n";
+	do {
+		cout << "Your choice\n";
+		cin >> choice;
+	} while (choice != 0 && choice != 1);
+	system("cls");
+	if (choice == 1) {
+		this->Replay();
+		this->cb->Print();
+		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
+	}
 }
