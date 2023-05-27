@@ -2,10 +2,6 @@
 
 bool Pawn::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]) {
 	ChessPiece* dest = cp[destRow][destCol];
-    // trường hợp ô đi đến là quân cờ cùng màu
-    if (dest->getColor() == this->getColor()) {
-        return false;
-    }
 	
 	// trường hợp ô đi đến không có quân cờ nào
     if (dest == 0)
@@ -38,9 +34,15 @@ bool Pawn::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPi
 			}
 		}
 	}
-    // trường hợp ô đi đến có quân cờ đối nghịch
+    // trường hợp ô đi đến có quân cờ
 	else
 	{
+		// trường hợp ô đi đến là quân cờ cùng màu
+		if (dest->getColor() == this->getColor()) {
+			return false;
+		}
+
+		// trường hợp ô đi đến là quân cờ màu đối nghịch
 		// đi chéo lên phía trước 1 ô
 		if ((srcCol == destCol + 1) || (srcCol == destCol - 1))
 		{

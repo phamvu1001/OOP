@@ -3,7 +3,7 @@
 bool Castle::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]) {
 	ChessPiece* dest = cp[destRow][destCol];
     // trường hợp ô đi đến là quân cờ cùng màu
-    if (dest->getColor() == this->getColor()) {
+    if (dest != 0 && dest->getColor() == this->getColor()) {
         return false;
     }
 
@@ -33,5 +33,6 @@ bool Castle::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, Chess
 		}
 		return true;
 	}
+	
 	return false;
 }  
