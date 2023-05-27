@@ -6,7 +6,7 @@ Person::Person(string name, char color) : Player(name, color) {
 }
 
 // return: row 0->7; col: 0->7
-void Person::selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) {
+void Person::selectChessPieceAndDest(ChessBoard* cb, int &srcRow, int &srcCol, int& destRow, int& destCol) {
     string startMove;
     int square_num;
     bool LegalSelected = true;
@@ -33,11 +33,8 @@ void Person::selectChessPiece(ChessBoard* cb, int& srcRow, int& srcCol) {
             }
         }
     } while (LegalSelected == false);
-}
 
-void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, int& destCol) {
     string endMove;
-    int square_num;
     bool inRange = true;
     // bool LegalMove = true;
 

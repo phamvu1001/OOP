@@ -187,8 +187,7 @@ void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_c
 		//make move
 		int srccol, srcrow, descol, desrow;
 		do {
-			player->selectChessPiece(this->cb, srcrow, srccol);
-			player->selectDest(this->cb, srcrow, srccol, desrow, descol);
+			player->selectChessPieceAndDest(this->cb, srcrow, srccol,desrow,descol);
 			LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
 			SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
 			if (!LegalMove) {
