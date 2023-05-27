@@ -1,8 +1,24 @@
 #include "GameManager.h"
-GameManager::GameManager() {	
+GameManager::GameManager() {
 	this->player1 = this->player2 = NULL;
 	this->cb = new ChessBoard;
 	this->turn = 'W';
+}
+GameManager::~GameManager() {
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->cb->cp[i][j] != NULL) {
+				delete this->cb->cp[i][j];
+			}
+		}
+	}
+	delete this->cb;
+	if (this->player1 != NULL) {
+		delete this->player1;
+	}
+	if (this->player2 != NULL) {
+		delete this->player2;
+	}
 }
 void GameManager::getPlayerInformation() {
 	int mode;
@@ -60,6 +76,9 @@ bool GameManager::IsGameOver() {
 	if (!this->cb->canMove(this->turn)) {
 		return 1;
 	}
+	if (this->cb->isInCheck(this->turn) && this->cb->canMove(this->turn)==0) {
+		return 1;
+	}
 	return 0;
 }
 bool GameManager::IsSelfCheckMove(int srcrow,int srccol,int desrow,int descol){
@@ -76,8 +95,17 @@ bool GameManager::IsSelfCheckMove(int srcrow,int srccol,int desrow,int descol){
 	return 0;
 }
 void GameManager::Move(int srcrow, int srccol, int desrow, int descol) {
+	int move=0;
+	this->capturedChessPiece.push(this->cb->cp[desrow][descol]);
+
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
 	this->cb->cp[srcrow][srccol] = NULL;
+
+	bool queenPromote=this->QueenPromotion(desrow, descol);
+	if (queenPromote) { 
+		move = 1; 
+	}
+	this->move_his.push(move * 10000 + srcrow * 1000 + srccol * 100 + desrow * 10 + descol);
 }
 bool GameManager::QueenPromotion(int row, int col) {
 	if (row!=0 && row!=7) {
@@ -91,37 +119,108 @@ bool GameManager::QueenPromotion(int row, int col) {
 	this->cb->cp[row][col] = new Queen(color);
 	return 1;
 }
-void GameManager::displayTurn() {
+void GameManager::Undo(stack<int> &undo_his,stack <ChessPiece*>&undo_capture) {
+	if (this->move_his.size() == 0) {
+		return;
+	}
+	this->changeTurn();
+
+	int step = this->move_his.top();
+	this->move_his.pop();
+	undo_his.push(step);
+	int move = step / 10000;
+	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
+	if (move == 0) {
+		this->cb->cp[srcrow][srccol] = this->cb->cp[desrow][descol];
+		this->cb->cp[desrow][descol] = this->capturedChessPiece.top();
+		undo_capture.push(this->capturedChessPiece.top());
+		this->capturedChessPiece.pop();
+		return;
+	}
+	if (move == 1) {
+		ChessPiece* piece = this->capturedChessPiece.top();
+		this->capturedChessPiece.pop();
+		delete this->cb->cp[desrow][descol];
+		this->cb->cp[srcrow][srccol] = new Pawn(this->turn);
+		this->cb->cp[desrow][descol] = piece;
+		undo_capture.push(piece);
+		return;
+	}
+	
+}
+void GameManager::Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture) {
+	if (undo_his.size() == 0) {
+		return;
+	}
+	this->changeTurn();
+	int step = undo_his.top();
+	cout << undo_his.size() << undo_capture.size() << endl;
+	undo_his.pop();
+	undo_capture.pop();
+	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
+	this->Move(srcrow, srccol, desrow, descol);
+}
+void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_capture) {
 	Player* player = this->getPlayerInTurn();
 	cout << player->getName() << " (" << player->getColor() << ") " << "'s turn: \n";
-	bool LegalMove, SelfCheckMove;
-	if (this->cb->isInCheck(player->getColor())) {
-		cout << "Your king is in check!!\n";
-	}
-	//make move
-	int srccol, srcrow, descol, desrow;
+	int choice=0;
 	do {
-		player->selectChessPiece(this->cb, srcrow, srccol);
-		player->selectDest(this->cb, srcrow, srccol, desrow, descol);
-		LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
-		SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
-		if (!LegalMove) {
-			cout << "Not a legal move!\n";
+		cout << "1.Undo\n";
+		cout << "2.Redo\n";
+		cout << "3.Move\n";
+		cout << "Your choice: ";
+		cin >> choice;
+	} while (choice > 3 || choice < 1);
+	if (choice == 3) {
+		while (undo_his.size() > 0) {
+			undo_his.pop();
 		}
-		if (SelfCheckMove) {
-			cout << "Don't leave your king in check!\n";
+		while (undo_capture.size() > 0) {
+			undo_capture.pop();
 		}
-	} while (!LegalMove || SelfCheckMove);
-	this->Move(srcrow, srccol, desrow, descol);
-	this->QueenPromotion(desrow, descol);
-	this->changeTurn();
+	}
+	switch (choice) {
+	case 3: {
+		bool LegalMove, SelfCheckMove;
+		if (this->cb->isInCheck(player->getColor())) {
+			cout << "Your king is in check!!\n";
+		}
+		//make move
+		int srccol, srcrow, descol, desrow;
+		do {
+			player->selectChessPiece(this->cb, srcrow, srccol);
+			player->selectDest(this->cb, srcrow, srccol, desrow, descol);
+			LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
+			SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
+			if (!LegalMove) {
+				cout << "Not a legal move!\n";
+			}
+			if (SelfCheckMove) {
+				cout << "Don't leave your king in check!\n";
+			}
+		} while (!LegalMove || SelfCheckMove);
+		this->Move(srcrow, srccol, desrow, descol);
+		this->changeTurn(); 
+		return;
+	}
+	case 1: {
+		this->Undo(undo_his,undo_capture);
+		return;
+	}
+	case 2: {
+		this->Redo(undo_his,undo_capture);
+		return;
+	}
+	}
 }
 void GameManager::handle() {
+	stack <int> undo_his;
+	stack <ChessPiece*> undo_capture;
 	this->getPlayerInformation();
 	system("cls");
 	do {
 		this->cb->Print();
-		this->displayTurn();
+		this->displayTurn(undo_his,undo_capture);
 		system("cls");
 	} while (!this->IsGameOver());
 
