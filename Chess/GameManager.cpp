@@ -81,6 +81,18 @@ void GameManager::Move(int srcrow, int srccol, int desrow, int descol) {
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
 	this->cb->cp[srcrow][srccol] = NULL;
 }
+bool GameManager::QueenPromotion(int row, int col) {
+	if (row!=0 && row!=7) {
+		return 0;
+	}
+	if (!dynamic_cast<Pawn*>(this->cb->cp[row][col])) {
+		return 0;
+	}
+	char color = this->cb->cp[row][col]->getColor();
+	delete this->cb->cp[row][col];
+	this->cb->cp[row][col] = new Queen(color);
+	return 1;
+}
 void GameManager::handle() {
 	this->getPlayerInformation();
 	system("cls");
@@ -89,7 +101,9 @@ void GameManager::handle() {
 		Player* player = this->getPlayerInTurn();
 		cout << player->getName()<<" ("<<player->getColor()<<") " << "'s turn: \n";
 		bool LegalMove, SelfCheckMove;
-
+		if (this->cb->isInCheck(player->getColor())) {
+			cout << "Your king is in check!!\n";
+		}
 		int srccol, srcrow, descol, desrow;
 		do {
 			player->selectChessPiece(this->cb, srcrow, srccol);
@@ -100,10 +114,11 @@ void GameManager::handle() {
 				cout << "Not a legal move!\n";
 			}
 			if (SelfCheckMove) {
-				cout << "This move make your king in check!\n";
+				cout << "Don't leave your king in check!\n";
 			}
 		} while (!LegalMove || SelfCheckMove);
 		this->Move(srcrow, srccol, desrow, descol);
+		this->QueenPromotion(desrow, descol);
 		this->changeTurn();
 		system("cls");
 	} while (!this->IsGameOver());

@@ -19,6 +19,7 @@ public:
 	bool IsGameOver();
 	bool IsSelfCheckMove(int,int,int,int);
 	void Move(int, int, int, int);
+	bool QueenPromotion(int,int);
 };
 
 #endif

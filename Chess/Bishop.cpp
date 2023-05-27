@@ -1,6 +1,8 @@
 ﻿#include "Bishop.h"
+
+
 char Bishop::getPiece() {
-    return 'P';
+    return 'B';
 }
 
 bool Bishop::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* cp[8][8]) {
@@ -11,10 +13,13 @@ bool Bishop::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece*
 
     //Kiểm tra: Tại đích đến có quân cờ nào cùng màu không?
     ChessPiece* dest = cp[des_x][des_y];
-    if (dest->getColor() == this->getColor()) {
-        return false;
+    if (dest != 0) {
+        if (dest->getColor() == this->getColor()) {
+            return false;
+        }
     }
     dest = nullptr;
+
     //Kiểm tra: Trên đường đến đích có quân cờ nào cản đường không?
     for (int i = 1; i < abs(d_x); i++) {
         int x = 0, y = 0;;

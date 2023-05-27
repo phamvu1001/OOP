@@ -51,7 +51,7 @@ void Person::selectDest(ChessBoard* cb, int srcRow, int srcCol, int& destRow, in
             inRange = false;
         }
         else {
-            inRange == true;
+            inRange = true;
             //... xu ly de tra ve ket qua 
             destRow = (int)endMove[1] - 49; // 1-8 <=> 0-7
             destCol = (int)endMove[0] - 65; // A-H <=> 0-7
