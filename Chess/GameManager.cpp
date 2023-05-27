@@ -1,5 +1,6 @@
 #include "GameManager.h"
-GameManager::GameManager() {
+GameManager::GameManager() {	
+	this->player1 = this->player2 = NULL;
 	this->cb = new ChessBoard;
 	this->turn = 'W';
 }
