@@ -10,7 +10,6 @@ class King: public ChessPiece
 {
 public:
 	//constructors
-	King() {};
 	King(char color) : ChessPiece(color) {};
 
 	//deconstructor
