@@ -12,7 +12,6 @@ GameManager::~GameManager() {
 			}
 		}
 	}
-	delete this->cb;
 	if (this->player1 != NULL) {
 		delete this->player1;
 	}
