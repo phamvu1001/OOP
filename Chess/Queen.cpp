@@ -14,8 +14,10 @@ bool Queen::isLegalMove(int cur_x, int cur_y, int des_x, int des_y, ChessPiece* 
 
     //Kiểm tra: Tại đích đến có quân cờ nào cùng màu không?
     ChessPiece* dest = cp[des_x][des_y];
-    if (dest->getColor() == this->getColor()) {
-        return false;
+    if (dest != 0) {
+        if (dest->getColor() == this->getColor()) {
+            return false;
+        }
     }
 
     if (abs(d_x) == abs(d_y)) {
