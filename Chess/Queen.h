@@ -11,7 +11,6 @@ class Queen : public ChessPiece
 {
 public:
 	//constructors
-	Queen() {};
 	Queen(char color) : ChessPiece(color) {};
 
 	//deconstructor
