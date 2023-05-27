@@ -224,13 +224,7 @@ void GameManager::Replay() {
 		move.push(this->move_his.top());
 		this->move_his.pop();
 	}
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (this->cb->cp[i][j]) {
-				delete this->cb->cp[i][j];
-			}
-		}
-	}
+	delete this->cb;
 	this->cb = new ChessBoard;
 	while (move.size() > 0) {
 		this->cb->Print();

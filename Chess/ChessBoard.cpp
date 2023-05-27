@@ -62,8 +62,8 @@ ChessBoard::~ChessBoard()
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			delete cp[i][j];
-			cp[i][j] = 0;
+			if(cp[i][j])
+				delete cp[i][j];
 		}
 	}
 }
