@@ -59,9 +59,6 @@ bool GameManager::IsGameOver() {
 	if (!this->cb->canMove(this->turn)) {
 		return 1;
 	}
-	if (this->cb->isInCheck(this->turn) && this->cb->canMove(this->turn)==0) {
-		return 1;
-	}
 	return 0;
 }
 bool GameManager::IsSelfCheckMove(int srcrow,int srccol,int desrow,int descol){
