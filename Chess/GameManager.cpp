@@ -56,6 +56,9 @@ void GameManager::changeTurn() {
 	}
 }
 bool GameManager::IsGameOver() {
+	if (!this->cb->canMove(this->turn)) {
+		return 1;
+	}
 	if (this->cb->isInCheck('W') && this->cb->canMove('W')==0) {
 		return 1;
 	}
@@ -93,35 +96,40 @@ bool GameManager::QueenPromotion(int row, int col) {
 	this->cb->cp[row][col] = new Queen(color);
 	return 1;
 }
+void GameManager::displayTurn() {
+	Player* player = this->getPlayerInTurn();
+	cout << player->getName() << " (" << player->getColor() << ") " << "'s turn: \n";
+	bool LegalMove, SelfCheckMove;
+	if (this->cb->isInCheck(player->getColor())) {
+		cout << "Your king is in check!!\n";
+	}
+	//make move
+	int srccol, srcrow, descol, desrow;
+	do {
+		player->selectChessPiece(this->cb, srcrow, srccol);
+		player->selectDest(this->cb, srcrow, srccol, desrow, descol);
+		LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
+		SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
+		if (!LegalMove) {
+			cout << "Not a legal move!\n";
+		}
+		if (SelfCheckMove) {
+			cout << "Don't leave your king in check!\n";
+		}
+	} while (!LegalMove || SelfCheckMove);
+	this->Move(srcrow, srccol, desrow, descol);
+	this->QueenPromotion(desrow, descol);
+	this->changeTurn();
+}
 void GameManager::handle() {
 	this->getPlayerInformation();
 	system("cls");
 	do {
 		this->cb->Print();
-		Player* player = this->getPlayerInTurn();
-		cout << player->getName()<<" ("<<player->getColor()<<") " << "'s turn: \n";
-		bool LegalMove, SelfCheckMove;
-		if (this->cb->isInCheck(player->getColor())) {
-			cout << "Your king is in check!!\n";
-		}
-		int srccol, srcrow, descol, desrow;
-		do {
-			player->selectChessPiece(this->cb, srcrow, srccol);
-			player->selectDest(this->cb, srcrow, srccol, desrow, descol);
-			LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
-			SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
-			if (!LegalMove) {
-				cout << "Not a legal move!\n";
-			}
-			if (SelfCheckMove) {
-				cout << "Don't leave your king in check!\n";
-			}
-		} while (!LegalMove || SelfCheckMove);
-		this->Move(srcrow, srccol, desrow, descol);
-		this->QueenPromotion(desrow, descol);
-		this->changeTurn();
+		this->displayTurn();
 		system("cls");
 	} while (!this->IsGameOver());
+
 	this->cb->Print();
 	Player* winner;
 	if (this->turn == this->player1->getColor()) {
@@ -130,5 +138,5 @@ void GameManager::handle() {
 	else {
 		winner = this->player1;
 	}
-	cout << "The winner is " << winner->getName() << endl;
+	cout << "The winner is "<<winner->getColor()<<": " << winner->getName() << endl;
 }
