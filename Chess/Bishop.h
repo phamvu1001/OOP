@@ -10,7 +10,6 @@ class Bishop: public ChessPiece
 {
 public:
 	//constructors
-	Bishop() {};
 	Bishop(char color) : ChessPiece(color) {};
 
 	//deconstructor
