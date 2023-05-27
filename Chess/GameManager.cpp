@@ -110,7 +110,7 @@ bool GameManager::QueenPromotion(int row, int col) {
 	if (row!=0 && row!=7) {
 		return 0;
 	}
-	if (!dynamic_cast<Pawn*>(this->cb->cp[row][col])) {
+	if (this->cb->cp[row][col]->getPiece()!='P') {
 		return 0;
 	}
 	char color = this->cb->cp[row][col]->getColor();
