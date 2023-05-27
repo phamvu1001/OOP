@@ -10,7 +10,6 @@ class  Knight: public ChessPiece
 {
 public:
 	//constructors
-		Knight() {};
 		Knight(char color) : ChessPiece(color) {};
 
 	 //deconstructor
