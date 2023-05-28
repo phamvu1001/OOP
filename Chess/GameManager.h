@@ -31,8 +31,8 @@ public:
 	void Replay();
 	
 	// lưu và đọc game trước 
-	void ReadLastGame(bool& status, int& mode string fileName );
-	void Save(bool status, int mode string fileName); 
+	void ReadLastGame(bool& status, int& mode, string fileName );
+	void Save(bool status, int mode, string fileName); 
 };
 
 #endif
