@@ -31,8 +31,8 @@ public:
 	void Replay();
 	
 	// lưu và đọc game trước 
-	void ReadLastGame(bool& status, int& mode, ChessPiece* cp[8][8], Player*& player1, Player*& player2, string fileName,char &turn );
-	void Save(bool status, int mode, ChessPiece* cp[8][8], Player*& player1, Player*& player2, string fileName, char turn ); 
+	void ReadLastGame(bool& status, int& mode string fileName );
+	void Save(bool status, int mode string fileName); 
 };
 
 #endif
