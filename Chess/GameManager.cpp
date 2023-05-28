@@ -26,9 +26,10 @@ void GameManager::getPlayerInformation() {
 		cout << "1. Two players\n";
 		cout << "2. Computer(Easy)\n";
 		cout << "3. Computer(Hard)\n";
+		cout << "4. Last game\n"; 
 		cout << "Your choice: ";
 		cin >> mode;
-	} while (mode < 1 || mode>3);
+	} while (mode < 1 || mode>4);
 	switch (mode) {
 	case 1: {
 		string name1, name2;
@@ -38,7 +39,7 @@ void GameManager::getPlayerInformation() {
 		cout << "Second-player's name: ";
 		getline(cin, name2, '\n');
 		srand(time(0));
-		int turn = rand()% 2+0;
+		int turn = rand() % 2 + 0;
 		if (turn == 0) {
 			this->player1 = new Person(name1, 'B');
 			this->player2 = new Person(name2, 'W');
@@ -48,12 +49,18 @@ void GameManager::getPlayerInformation() {
 			this->player2 = new Person(name2, 'B');
 		}
 		return;
-		}
+	}
 	case 2: {
 
 	}
 	case 3: {
 
+	}
+	case 4 : 
+	{
+		bool status; 
+		int mode; 
+		this->ReadLastGame(status, mode, "lastGame.txt"); 
 	}
 	}
 }
@@ -75,12 +82,12 @@ bool GameManager::IsGameOver() {
 	if (!this->cb->canMove(this->turn)) {
 		return 1;
 	}
-	if (this->cb->isInCheck(this->turn) && this->cb->canMove(this->turn)==0) {
+	if (this->cb->isInCheck(this->turn) && this->cb->canMove(this->turn) == 0) {
 		return 1;
 	}
 	return 0;
 }
-bool GameManager::IsSelfCheckMove(int srcrow,int srccol,int desrow,int descol){
+bool GameManager::IsSelfCheckMove(int srcrow, int srccol, int desrow, int descol) {
 	ChessPiece* cp = this->cb->cp[desrow][descol];
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
 	this->cb->cp[srcrow][srccol] = NULL;
@@ -94,23 +101,23 @@ bool GameManager::IsSelfCheckMove(int srcrow,int srccol,int desrow,int descol){
 	return 0;
 }
 void GameManager::Move(int srcrow, int srccol, int desrow, int descol) {
-	int move=0;
+	int move = 0;
 	this->capturedChessPiece.push(this->cb->cp[desrow][descol]);
 
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
 	this->cb->cp[srcrow][srccol] = NULL;
 
-	bool queenPromote=this->QueenPromotion(desrow, descol);
-	if (queenPromote) { 
-		move = 1; 
+	bool queenPromote = this->QueenPromotion(desrow, descol);
+	if (queenPromote) {
+		move = 1;
 	}
 	this->move_his.push(move * 10000 + srcrow * 1000 + srccol * 100 + desrow * 10 + descol);
 }
 bool GameManager::QueenPromotion(int row, int col) {
-	if (row!=0 && row!=7) {
+	if (row != 0 && row != 7) {
 		return 0;
 	}
-	if (this->cb->cp[row][col]->getPiece()!='P') {
+	if (this->cb->cp[row][col]->getPiece() != 'P') {
 		return 0;
 	}
 	char color = this->cb->cp[row][col]->getColor();
@@ -118,7 +125,7 @@ bool GameManager::QueenPromotion(int row, int col) {
 	this->cb->cp[row][col] = new Queen(color);
 	return 1;
 }
-void GameManager::Undo(stack<int> &undo_his,stack <ChessPiece*>&undo_capture) {
+void GameManager::Undo(stack<int>& undo_his, stack <ChessPiece*>& undo_capture) {
 	if (this->move_his.size() == 0) {
 		return;
 	}
@@ -145,7 +152,7 @@ void GameManager::Undo(stack<int> &undo_his,stack <ChessPiece*>&undo_capture) {
 		undo_capture.push(piece);
 		return;
 	}
-	
+
 }
 void GameManager::Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture) {
 	if (undo_his.size() == 0) {
@@ -159,10 +166,10 @@ void GameManager::Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture)
 	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
 	this->Move(srcrow, srccol, desrow, descol);
 }
-void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_capture) {
+void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_capture) {
 	Player* player = this->getPlayerInTurn();
 	cout << player->getName() << " (" << player->getColor() << ") " << "'s turn: \n";
-	int choice=0;
+	int choice = 0;
 	do {
 		cout << "1.Undo\n";
 		cout << "2.Redo\n";
@@ -187,7 +194,7 @@ void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_c
 		//make move
 		int srccol, srcrow, descol, desrow;
 		do {
-			player->selectChessPieceAndDest(this->cb, srcrow, srccol,desrow,descol);
+			player->selectChessPieceAndDest(this->cb, srcrow, srccol, desrow, descol);
 			LegalMove = this->cb->cp[srcrow][srccol]->isLegalMove(srcrow, srccol, desrow, descol, this->cb->cp);
 			SelfCheckMove = this->IsSelfCheckMove(srcrow, srccol, desrow, descol);
 			if (!LegalMove) {
@@ -198,18 +205,20 @@ void GameManager::displayTurn(stack <int> &undo_his, stack <ChessPiece*> &undo_c
 			}
 		} while (!LegalMove || SelfCheckMove);
 		this->Move(srcrow, srccol, desrow, descol);
-		this->changeTurn(); 
+		this->changeTurn();
 		return;
 	}
 	case 1: {
-		this->Undo(undo_his,undo_capture);
+		this->Undo(undo_his, undo_capture);
 		return;
 	}
 	case 2: {
-		this->Redo(undo_his,undo_capture);
+		this->Redo(undo_his, undo_capture);
 		return;
 	}
 	}
+
+	
 }
 void GameManager::Replay() {
 	stack <int>move;
@@ -232,7 +241,7 @@ void GameManager::Replay() {
 		int step = move.top();
 		move.pop();
 		int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
-		this->Move(srcrow,srccol, desrow, descol);
+		this->Move(srcrow, srccol, desrow, descol);
 		system("cls");
 	}
 }
@@ -243,7 +252,8 @@ void GameManager::handle() {
 	system("cls");
 	do {
 		this->cb->Print();
-		this->displayTurn(undo_his,undo_capture);
+		this->displayTurn(undo_his, undo_capture);
+		this->Save(0, 1, "lastGame.txt");
 		system("cls");
 	} while (!this->IsGameOver());
 
@@ -255,7 +265,7 @@ void GameManager::handle() {
 	else {
 		winner = this->player1;
 	}
-	cout << "The winner is "<<winner->getColor()<<": " << winner->getName() << endl;
+	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
 	cout << "Replay the game: \n";
 	int choice;
 	cout << "1.Yes\n";
@@ -270,4 +280,101 @@ void GameManager::handle() {
 		this->cb->Print();
 		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
 	}
+
+}
+
+void GameManager::ReadLastGame(bool& status, int& mode,  string fileName)
+{
+	ifstream fi(fileName);
+	if (!fi)
+	{
+	}
+	else
+	{
+		fi >> status;
+		fi >> mode;
+		fi >> this->turn;
+		string temp;
+		getline(fi, temp);
+		string play1info, play2info, play1name, play2name;
+		getline(fi, play1info);
+		string color;
+		stringstream ss(play1info);
+		getline(ss, color, '|');	
+		getline(ss, play1name, '|');
+		ss >> play1name;
+		this->player1 = new Person(play1name, color[0]);
+		getline(fi, play2info);
+		stringstream ss1(play2info);
+		getline(ss1, color, '|');
+		getline(ss1, play2name, '|');
+		this->player2 = new Person(play2name, color[0]);
+
+		for (int i = 0; i < 8; i++)
+		{
+			getline(fi, temp);
+			stringstream s(temp);
+			string temp2;
+			int j = 0;
+			while (s >> temp2)
+			{
+				if (temp2 != "0")
+				{
+					char color = temp2[0];
+					char piece = temp2[1];
+					if (piece == 'C')
+						this->cb->cp[i][j] = new Castle(color);
+					if (piece == 'N')
+						this->cb->cp[i][j] = new Knight(color);
+					if (piece == 'Q')
+						this->cb->cp[i][j] = new Queen(color);
+					if (piece == 'K')
+						this->cb->cp[i][j] = new King(color);
+					if (piece == 'B')
+						this->cb->cp[i][j] = new Bishop(color);
+					if (piece == 'P')
+						this->cb->cp[i][j] = new Pawn(color);
+
+
+				}
+				else
+				{
+					this->cb->cp[i][j] = NULL;
+				}
+				j++;;
+			}
+
+
+		}
+
+
+	}
+	fi.close();
+}
+void GameManager::Save(bool status, int mode,  string fileName)
+{
+	ofstream fo(fileName);
+	if (!fo)
+	{
+	}
+	else
+	{
+		fo << status << endl;
+		fo << mode << endl;
+		fo << this->turn << endl;
+		fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
+		fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
+		for (int i = 0; i < 8; i++)
+		{
+			for (int j = 0; j < 8; j++)
+			{
+				if (this->cb->cp[i][j] != NULL)
+					fo << this->cb->cp[i][j]->getColor() << this->cb->cp[i][j]->getPiece() << " ";
+				else fo << "0" << " ";
+			}
+			fo << endl;
+		}
+
+	}
+	fo.close();
 }
