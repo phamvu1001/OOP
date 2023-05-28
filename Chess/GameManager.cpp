@@ -26,7 +26,7 @@ void GameManager::getPlayerInformation() {
 		cout << "1. Two players\n";
 		cout << "2. Computer(Easy)\n";
 		cout << "3. Computer(Hard)\n";
-		cout << "4. Last game\n"; 
+		cout << "4. Last game\n";
 		cout << "Your choice: ";
 		cin >> mode;
 	} while (mode < 1 || mode>4);
@@ -56,11 +56,11 @@ void GameManager::getPlayerInformation() {
 	case 3: {
 
 	}
-	case 4 : 
+	case 4:
 	{
-		bool status; 
-		int mode; 
-		this->ReadLastGame(status, mode, "lastGame.txt"); 
+		bool status;
+		int mode;
+		this->ReadLastGame(status, mode, "lastGame.txt");
 	}
 	}
 }
@@ -218,7 +218,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 	}
 	}
 
-	
+
 }
 void GameManager::Replay() {
 	stack <int>move;
@@ -283,8 +283,16 @@ void GameManager::handle() {
 
 }
 
-void GameManager::ReadLastGame(bool& status, int& mode,  string fileName)
+void GameManager::ReadLastGame(bool& status, int& mode, string fileName)
 {
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->cb->cp[i][j]) {
+				delete this->cb->cp[i][j];
+				this->cb->cp[i][j] = NULL;
+			}
+		}
+	}
 	ifstream fi(fileName);
 	if (!fi)
 	{
@@ -300,7 +308,7 @@ void GameManager::ReadLastGame(bool& status, int& mode,  string fileName)
 		getline(fi, play1info);
 		string color;
 		stringstream ss(play1info);
-		getline(ss, color, '|');	
+		getline(ss, color, '|');
 		getline(ss, play1name, '|');
 		ss >> play1name;
 		this->player1 = new Person(play1name, color[0]);
@@ -351,7 +359,7 @@ void GameManager::ReadLastGame(bool& status, int& mode,  string fileName)
 	}
 	fi.close();
 }
-void GameManager::Save(bool status, int mode,  string fileName)
+void GameManager::Save(bool status, int mode, string fileName)
 {
 	ofstream fo(fileName);
 	if (!fo)
