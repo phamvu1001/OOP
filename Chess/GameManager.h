@@ -5,6 +5,7 @@
 #include <sstream>
 #include "Person.h"
 #include <iostream>
+#include "Computer.h"
 using namespace std;
 class GameManager {
 	Player* player1, *player2;
@@ -19,6 +20,7 @@ public:
 	bool IsGameOver();
 	bool IsSelfCheckMove(int,int,int,int);
 	void Move(int, int, int, int);
+	void vsComputer();
 };
 
 #endif
