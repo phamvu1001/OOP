@@ -21,15 +21,22 @@ GameManager::~GameManager() {
 }
 void GameManager::getPlayerInformation() {
 	int mode;
+	bool status; 
+	ReadLastGame(status, mode, "lastGame.txt"); 
+	system("cls");
 	do {
 		cout << "Mode: \n";
 		cout << "1. Two players\n";
 		cout << "2. Computer(Easy)\n";
 		cout << "3. Computer(Hard)\n";
-		cout << "4. Last game\n";
+		if (status == 0)
+			cout << "4. Last game\n";
 		cout << "Your choice: ";
 		cin >> mode;
+		this->mode = mode; 
 	} while (mode < 1 || mode>4);
+	
+	
 	switch (mode) {
 	case 1: {
 		string name1, name2;
@@ -54,7 +61,7 @@ void GameManager::getPlayerInformation() {
 		string name;
 		cout << "Enter your name: ";
 		cin.ignore();
-		getline(cin,name,'\n');
+		getline(cin, name, '\n');
 		srand(time(0));
 		int turn = rand() % 2 + 0;
 		if (turn == 0) {
@@ -191,7 +198,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 		cout << "Your choice: ";
 		cin >> choice;
 	} while (choice > 3 || choice < 1);
-	
+
 	if (choice == 3) {
 		while (undo_his.size() > 0) {
 			undo_his.pop();
@@ -268,10 +275,10 @@ void GameManager::handle() {
 	do {
 		this->cb->Print();
 		this->displayTurn(undo_his, undo_capture);
-		this->Save(0, 1, "lastGame.txt");
+		this->Save(0, this->mode, "lastGame.txt");
 		system("cls");
 	} while (!this->IsGameOver());
-
+	this->Save(1, this->mode, "lastGame.txt");
 	this->cb->Print();
 	Player* winner;
 	if (this->turn == this->player1->getColor()) {
@@ -300,14 +307,7 @@ void GameManager::handle() {
 
 void GameManager::ReadLastGame(bool& status, int& mode, string fileName)
 {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			if (this->cb->cp[i][j]) {
-				delete this->cb->cp[i][j];
-				this->cb->cp[i][j] = NULL;
-			}
-		}
-	}
+	
 	ifstream fi(fileName);
 	if (!fi)
 	{
@@ -315,6 +315,15 @@ void GameManager::ReadLastGame(bool& status, int& mode, string fileName)
 	else
 	{
 		fi >> status;
+		if (status == 1) return; 
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this->cb->cp[i][j]) {
+					delete this->cb->cp[i][j];
+					this->cb->cp[i][j] = NULL;
+				}
+			}
+		}
 		fi >> mode;
 		fi >> this->turn;
 		string temp;
@@ -331,7 +340,13 @@ void GameManager::ReadLastGame(bool& status, int& mode, string fileName)
 		stringstream ss1(play2info);
 		getline(ss1, color, '|');
 		getline(ss1, play2name, '|');
-		this->player2 = new Person(play2name, color[0]);
+		if (mode == 1) {
+			this->player2 = new Person(play2name, color[0]);
+		} 
+		else if (mode == 2) 
+		{
+			this->player2 = new Computer(color[0]);
+		}
 
 		for (int i = 0; i < 8; i++)
 		{
@@ -382,22 +397,27 @@ void GameManager::Save(bool status, int mode, string fileName)
 	}
 	else
 	{
-		fo << status << endl;
-		fo << mode << endl;
-		fo << this->turn << endl;
-		fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
-		fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				if (this->cb->cp[i][j] != NULL)
-					fo << this->cb->cp[i][j]->getColor() << this->cb->cp[i][j]->getPiece() << " ";
-				else fo << "0" << " ";
-			}
-			fo << endl;
-		}
+		if (status == 1) { fo << "1";  return;  }
+		else {
+			fo << status << endl;
+			fo << mode << endl;
+			fo << this->turn << endl;
+			fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
+			fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
 
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					if (this->cb->cp[i][j] != NULL)
+						fo << this->cb->cp[i][j]->getColor() << this->cb->cp[i][j]->getPiece() << " ";
+					else fo << "0" << " ";
+				}
+				fo << endl;
+			}
+			fo.close();
+		}
 	}
-	fo.close();
+		
+
 }
