@@ -6,6 +6,7 @@
 #include <stack>
 #include <fstream>
 #include "Person.h"
+#include "Computer.h"
 #include <iostream>
 #include <Windows.h>
 using namespace std;

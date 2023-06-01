@@ -51,7 +51,21 @@ void GameManager::getPlayerInformation() {
 		return;
 	}
 	case 2: {
-
+		string name;
+		cout << "Enter your name: ";
+		cin.ignore();
+		getline(cin,name,'\n');
+		srand(time(0));
+		int turn = rand() % 2 + 0;
+		if (turn == 0) {
+			this->player1 = new Person(name, 'B');
+			this->player2 = new Computer('W');
+		}
+		else {
+			this->player1 = new Person(name, 'W');
+			this->player2 = new Computer('B');
+		}
+		return;
 	}
 	case 3: {
 
@@ -177,6 +191,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 		cout << "Your choice: ";
 		cin >> choice;
 	} while (choice > 3 || choice < 1);
+	
 	if (choice == 3) {
 		while (undo_his.size() > 0) {
 			undo_his.pop();
