@@ -14,6 +14,7 @@ class GameManager {
 	Player* player1, * player2;
 	ChessBoard* cb;
 	char turn;
+	int mode;
 	stack <int> move_his;
 	stack<ChessPiece*> capturedChessPiece;
 public:
@@ -33,8 +34,8 @@ public:
 	void Replay();
 
 	// lưu và đọc game trước 
-	void ReadLastGame(bool& status, int& mode, string fileName);
-	void Save(bool status, int mode, string fileName);
+	bool ReadLastGame(string fileName);
+	bool Save(bool status, string fileName);
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "GameManager.h"
 GameManager::GameManager() {
+	this->mode = 0;
 	this->player1 = this->player2 = NULL;
 	this->cb = new ChessBoard;
 	this->turn = 'W';
@@ -21,8 +22,12 @@ GameManager::~GameManager() {
 }
 void GameManager::getPlayerInformation() {
 	int mode;
-	bool status; 
-	ReadLastGame(status, mode, "lastGame.txt"); 
+	int status=1;
+	ifstream fi("lastgame.txt");
+	if (fi) {
+		fi >> status;
+		fi.close();
+	}
 	system("cls");
 	do {
 		cout << "Mode: \n";
@@ -33,10 +38,9 @@ void GameManager::getPlayerInformation() {
 			cout << "4. Last game\n";
 		cout << "Your choice: ";
 		cin >> mode;
-		this->mode = mode; 
 	} while (mode < 1 || mode>4);
-	
-	
+
+
 	switch (mode) {
 	case 1: {
 		string name1, name2;
@@ -55,6 +59,7 @@ void GameManager::getPlayerInformation() {
 			this->player1 = new Person(name1, 'W');
 			this->player2 = new Person(name2, 'B');
 		}
+		this->mode = 1;
 		return;
 	}
 	case 2: {
@@ -72,16 +77,20 @@ void GameManager::getPlayerInformation() {
 			this->player1 = new Person(name, 'W');
 			this->player2 = new Computer('B');
 		}
+		this->mode = 2;
 		return;
 	}
 	case 3: {
-
+		this->mode = 3;
+		return;
 	}
 	case 4:
 	{
-		bool status;
-		int mode;
-		this->ReadLastGame(status, mode, "lastGame.txt");
+		this->ReadLastGame("lastGame.txt");
+		return;
+	}
+	default: {
+		return;
 	}
 	}
 }
@@ -275,10 +284,10 @@ void GameManager::handle() {
 	do {
 		this->cb->Print();
 		this->displayTurn(undo_his, undo_capture);
-		this->Save(0, this->mode, "lastGame.txt");
+		this->Save(0,"lastGame.txt");
 		system("cls");
 	} while (!this->IsGameOver());
-	this->Save(1, this->mode, "lastGame.txt");
+	this->Save(1, "lastGame.txt");
 	this->cb->Print();
 	Player* winner;
 	if (this->turn == this->player1->getColor()) {
@@ -305,119 +314,125 @@ void GameManager::handle() {
 
 }
 
-void GameManager::ReadLastGame(bool& status, int& mode, string fileName)
+bool GameManager::ReadLastGame( string fileName)
 {
-	
 	ifstream fi(fileName);
+	//check if file not exist
 	if (!fi)
 	{
+		return 0;
 	}
-	else
+	//check if the last game is over
+	int status;
+	fi >> status;
+	if (status == 1) 
+		return 0;
+	//delete chessboard
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->cb->cp[i][j]) {
+				delete this->cb->cp[i][j];
+				this->cb->cp[i][j] = NULL;
+			}
+		}
+	}
+	//get mode of the last game
+	int mode;
+	fi>> mode;
+	this->mode = mode;
+	fi >> this->turn;
+	string temp;
+	getline(fi, temp);
+	//get 2 player information
+	string play1info, play2info, play1name, play2name;
+	getline(fi, play1info);
+	string color;
+	stringstream ss(play1info);
+	getline(ss, color, '|');
+	getline(ss, play1name, '|');
+	ss >> play1name;
+	this->player1 = new Person(play1name, color[0]);
+	getline(fi, play2info);
+	stringstream ss1(play2info);
+	getline(ss1, color, '|');
+	getline(ss1, play2name, '|');
+	if (mode == 1) {
+		this->player2 = new Person(play2name, color[0]);
+	}
+	else if (mode == 2)
 	{
-		fi >> status;
-		if (status == 1) return; 
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 8; j++) {
-				if (this->cb->cp[i][j]) {
-					delete this->cb->cp[i][j];
-					this->cb->cp[i][j] = NULL;
-				}
-			}
-		}
-		fi >> mode;
-		fi >> this->turn;
-		string temp;
+		this->player2 = new Computer(color[0]);
+	}
+	//get last chessboard
+	for (int i = 0; i < 8; i++)
+	{
 		getline(fi, temp);
-		string play1info, play2info, play1name, play2name;
-		getline(fi, play1info);
-		string color;
-		stringstream ss(play1info);
-		getline(ss, color, '|');
-		getline(ss, play1name, '|');
-		ss >> play1name;
-		this->player1 = new Person(play1name, color[0]);
-		getline(fi, play2info);
-		stringstream ss1(play2info);
-		getline(ss1, color, '|');
-		getline(ss1, play2name, '|');
-		if (mode == 1) {
-			this->player2 = new Person(play2name, color[0]);
-		} 
-		else if (mode == 2) 
+		stringstream s(temp);
+		string temp2;
+		int j = 0;
+		while (s >> temp2)
 		{
-			this->player2 = new Computer(color[0]);
-		}
-
-		for (int i = 0; i < 8; i++)
-		{
-			getline(fi, temp);
-			stringstream s(temp);
-			string temp2;
-			int j = 0;
-			while (s >> temp2)
+			if (temp2 != "0")
 			{
-				if (temp2 != "0")
-				{
-					char color = temp2[0];
-					char piece = temp2[1];
-					if (piece == 'C')
-						this->cb->cp[i][j] = new Castle(color);
-					if (piece == 'N')
-						this->cb->cp[i][j] = new Knight(color);
-					if (piece == 'Q')
-						this->cb->cp[i][j] = new Queen(color);
-					if (piece == 'K')
-						this->cb->cp[i][j] = new King(color);
-					if (piece == 'B')
-						this->cb->cp[i][j] = new Bishop(color);
-					if (piece == 'P')
-						this->cb->cp[i][j] = new Pawn(color);
-
-
-				}
-				else
-				{
-					this->cb->cp[i][j] = NULL;
-				}
-				j++;;
+				char color = temp2[0];
+				char piece = temp2[1];
+				if (piece == 'C')
+					this->cb->cp[i][j] = new Castle(color);
+				else if (piece == 'N')
+					this->cb->cp[i][j] = new Knight(color);
+				else if (piece == 'Q')
+					this->cb->cp[i][j] = new Queen(color);
+				else if (piece == 'K')
+					this->cb->cp[i][j] = new King(color);
+				else if (piece == 'B')
+					this->cb->cp[i][j] = new Bishop(color);
+				else if (piece == 'P')
+					this->cb->cp[i][j] = new Pawn(color);
 			}
-
-
+			else
+			{
+				this->cb->cp[i][j] = NULL;
+			}
+				j++;;
 		}
-
-
 	}
 	fi.close();
+	return 1;
 }
-void GameManager::Save(bool status, int mode, string fileName)
+bool GameManager::Save(bool status,string fileName)
 {
 	ofstream fo(fileName);
 	if (!fo)
 	{
+		return 0;
 	}
-	else
+	if (status == 1) { 
+		fo << "1";  
+		return 1; 
+	}
+	fo << status << endl;
+	fo << this->mode << endl;
+	fo << this->turn << endl;
+	//the first player in lastgame.txt is always a person
+	if (dynamic_cast<Person*>(this->player1)) {
+		fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
+		fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
+	}
+	else {
+		fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
+		fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
+	}
+	//save chessboard
+	for (int i = 0; i < 8; i++)
 	{
-		if (status == 1) { fo << "1";  return;  }
-		else {
-			fo << status << endl;
-			fo << mode << endl;
-			fo << this->turn << endl;
-			fo << this->player1->getColor() << "|" << this->player1->getName() << endl;
-			fo << this->player2->getColor() << "|" << this->player2->getName() << endl;
-
-			for (int i = 0; i < 8; i++)
-			{
-				for (int j = 0; j < 8; j++)
-				{
-					if (this->cb->cp[i][j] != NULL)
-						fo << this->cb->cp[i][j]->getColor() << this->cb->cp[i][j]->getPiece() << " ";
-					else fo << "0" << " ";
-				}
-				fo << endl;
-			}
-			fo.close();
+		for (int j = 0; j < 8; j++)
+		{
+			if (this->cb->cp[i][j] != NULL)
+				fo << this->cb->cp[i][j]->getColor() << this->cb->cp[i][j]->getPiece() << " ";
+			else fo << "0" << " ";
 		}
+		fo << endl;
 	}
-		
-
+	fo.close();
+	return 1;
 }

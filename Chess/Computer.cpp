@@ -39,4 +39,5 @@ void Computer::selectChessPieceAndDest(ChessBoard* cb, int& srcRow, int& srcCol,
 	srcCol = (chosen / 100) % 10;
 	desrow = (chosen / 10) % 10;
 	descol = chosen % 10;
+	Sleep(2000);
 }

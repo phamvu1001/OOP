@@ -2,7 +2,7 @@
 #define COMPUTER_H
 #include <vector>
 #include "Player.h"
-
+#include <Windows.h>
 class Computer : public Player {
 public:
     Computer(char color);
