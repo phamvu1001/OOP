@@ -1,5 +1,7 @@
 ﻿#include "Knight.h"
-
+int Knight::getValue() {
+    return 30;
+}
 
 char Knight::getPiece() {
     return 'N';

@@ -233,3 +233,19 @@ bool ChessBoard::canMove(char color)
 	}
 	return false;
 }
+int ChessBoard::calculateWeight() {
+	int weight = 0;
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->cp[i][j]) {
+				if (this->cp[i][j]->getColor() == 'W') {
+					weight += this->cp[i][j]->getValue();
+				}
+				else {
+					weight -= this->cp[i][j]->getValue();
+				}
+			}
+		}
+	}
+	return weight;
+}

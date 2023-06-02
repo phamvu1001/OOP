@@ -19,5 +19,6 @@ public:
 
 	bool isInCheck(char color);
 	bool canMove(char color);
+	int calculateWeight();
 };
 #endif // !CHESSBOARD_H

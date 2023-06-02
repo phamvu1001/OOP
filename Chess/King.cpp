@@ -1,5 +1,7 @@
 ﻿#include "King.h"
-
+int King::getValue() {
+    return 900;
+}
 
 char King::getPiece() {
     return 'K';

@@ -1,5 +1,7 @@
 ﻿#include "Bishop.h"
-
+int Bishop::getValue() {
+    return 20;
+}
 
 char Bishop::getPiece() {
     return 'B';

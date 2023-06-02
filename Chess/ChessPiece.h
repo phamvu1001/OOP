@@ -20,6 +20,7 @@ public:
 	virtual char getPiece() = 0;
 	// logic check
 	virtual bool isLegalMove(int, int, int, int, ChessPiece* cp[8][8]) = 0;
+	virtual int getValue() = 0;
 };
 
 #endif // ! CHESSPIECE_H

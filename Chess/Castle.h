@@ -10,6 +10,7 @@ public:
 	~Castle() {}
 	virtual char getPiece() { return 'C'; }
 	bool isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]);
+	int getValue();
 };
 
 #endif

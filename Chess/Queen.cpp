@@ -1,5 +1,7 @@
 ﻿#include "Queen.h"
-
+int Queen::getValue() {
+    return 50;
+}
 char Queen::getPiece() {
     return 'Q';
 }

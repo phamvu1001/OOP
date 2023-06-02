@@ -81,6 +81,20 @@ void GameManager::getPlayerInformation() {
 		return;
 	}
 	case 3: {
+		string name;
+		cout << "Enter your name: ";
+		cin.ignore();
+		getline(cin, name, '\n');
+		srand(time(0));
+		int turn = rand() % 2 + 0;
+		if (turn == 0) {
+			this->player1 = new Person(name, 'B');
+			this->player2 = new HardComputer('W');
+		}
+		else {
+			this->player1 = new Person(name, 'W');
+			this->player2 = new HardComputer('B');
+		}
 		this->mode = 3;
 		return;
 	}
@@ -362,6 +376,9 @@ bool GameManager::ReadLastGame( string fileName)
 	else if (mode == 2)
 	{
 		this->player2 = new Computer(color[0]);
+	}
+	else {
+		this->player2 = new HardComputer(color[0]);
 	}
 	//get last chessboard
 	for (int i = 0; i < 8; i++)

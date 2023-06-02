@@ -1,5 +1,7 @@
 ﻿#include "Pawn.h"
-
+int Pawn::getValue() {
+	return 10;
+}
 bool Pawn::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]) {
 	ChessPiece* dest = cp[destRow][destCol];
 

@@ -7,6 +7,7 @@
 #include <fstream>
 #include "Person.h"
 #include "Computer.h"
+#include "HardComputer.h"
 #include <iostream>
 #include <Windows.h>
 using namespace std;

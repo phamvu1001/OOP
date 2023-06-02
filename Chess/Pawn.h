@@ -10,6 +10,7 @@ public:
 	~Pawn() {}
 	virtual char getPiece() { return 'P'; }
 	bool isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]);
+	int getValue();
 };
 
 #endif
