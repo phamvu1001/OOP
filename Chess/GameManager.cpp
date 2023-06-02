@@ -19,6 +19,13 @@ GameManager::~GameManager() {
 	if (this->player2 != NULL) {
 		delete this->player2;
 	}
+	while (this->capturedChessPiece.size() > 0) {
+		ChessPiece* cp = this->capturedChessPiece.top();
+		this->capturedChessPiece.pop();
+		if (cp) {
+			delete cp;
+		}
+	}
 }
 void GameManager::getPlayerInformation() {
 	int mode;
