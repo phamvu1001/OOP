@@ -7,9 +7,6 @@ void  insertNode(Node*& root, Node* add) {
 	root->pNext.push_back(add);
 }
 Node* createGameTree(ChessBoard* cb,char color,int depth, int maxdepth) {
-	if (depth == maxdepth) {
-		return NULL;
-	}
 	bool canMove = false;
 	Node* root = new Node;
 	for (int i = 0; i < 8; i++) {
@@ -25,16 +22,23 @@ Node* createGameTree(ChessBoard* cb,char color,int depth, int maxdepth) {
 						bool SelfCheckMove = cb->isInCheck(color);
 						if (LegalMove && !SelfCheckMove) {
 							canMove = true;
-							char color2 = (color == 'B') ? 'W' : 'B';							
+							char color2 = (color == 'B') ? 'W' : 'B';	
+							if (depth == maxdepth) {
+								root->srcrow = i;
+								root->srccol = j;
+								root->desrow = k;
+								root->descol = l;
+								root->weight = cb->calculateWeight();
+								cb->cp[i][j] = currentPiece;
+								cb->cp[k][l] = dest;
+								return root;
+							}
 							Node* add = createGameTree(cb, color2, depth+1, maxdepth);
 							if (add) {
 								add->srcrow = i;
 								add->srccol = j;
 								add->desrow = k;
 								add->descol = l;
-								if (depth == maxdepth-2) {
-									add->weight = cb->calculateWeight();
-								}
 								insertNode(root, add);
 							}
 						}
