@@ -325,7 +325,7 @@ void GameManager::handle() {
 	do {
 		cout << "Your choice\n";
 		cin >> choice;
-	} while (choice != 0 && choice != 1);
+	} while (choice != 2 && choice != 1);
 	system("cls");
 	if (choice == 1) {
 		this->Replay();
