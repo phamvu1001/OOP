@@ -234,7 +234,11 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 			undo_his.pop();
 		}
 		while (undo_capture.size() > 0) {
+			ChessPiece* cp=undo_capture.top();
 			undo_capture.pop();
+			if(cp){
+				delete cp;
+			}
 		}
 	}
 	switch (choice) {
@@ -317,7 +321,7 @@ void GameManager::handle() {
 	else {
 		winner = this->player1;
 	}
-	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
+	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
 	cout << "Replay the game: \n";
 	int choice;
 	cout << "1.Yes\n";
@@ -330,7 +334,7 @@ void GameManager::handle() {
 	if (choice == 1) {
 		this->Replay();
 		this->cb->Print();
-		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
+		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
 	}
 
 }
