@@ -23,23 +23,24 @@ Node* createGameTree(ChessBoard* cb,char color,int depth, int maxdepth) {
 						if (LegalMove && !SelfCheckMove) {
 							canMove = true;
 							char color2 = (color == 'B') ? 'W' : 'B';	
-							if (depth == maxdepth) {
-								root->srcrow = i;
-								root->srccol = j;
-								root->desrow = k;
-								root->descol = l;
-								root->weight = cb->calculateWeight();
-								cb->cp[i][j] = currentPiece;
-								cb->cp[k][l] = dest;
-								return root;
-							}
-							Node* add = createGameTree(cb, color2, depth+1, maxdepth);
-							if (add) {
+							if (depth == maxdepth-1) {
+								Node* add = new Node;
 								add->srcrow = i;
 								add->srccol = j;
 								add->desrow = k;
 								add->descol = l;
+								add->weight = cb->calculateWeight();
 								insertNode(root, add);
+							}
+							else {
+								Node* add = createGameTree(cb, color2, depth + 1, maxdepth);
+								if (add) {
+									add->srcrow = i;
+									add->srccol = j;
+									add->desrow = k;
+									add->descol = l;
+									insertNode(root, add);
+								}
 							}
 						}
 						cb->cp[i][j] = currentPiece;
@@ -103,9 +104,11 @@ void DeleteGameTree(Node* root) {
 	}
 	delete root;
 }
+
 void HardComputer::selectChessPieceAndDest(ChessBoard* cb, int& srcRow, int& srcCol, int& desrow, int& descol) {
 	Node* root = createGameTree(cb, this->color,1,4);
 	GameTreeTraversal(root, this->color);
+	system("pause");
 	vector <Node*>select;
 	for (auto it = root->pNext.begin(); it < root->pNext.end(); it++) {
 		if ((*it)->weight == root->weight) {
