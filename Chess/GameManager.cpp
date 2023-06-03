@@ -19,6 +19,13 @@ GameManager::~GameManager() {
 	if (this->player2 != NULL) {
 		delete this->player2;
 	}
+	while (this->capturedChessPiece.size() > 0) {
+		ChessPiece* cp = this->capturedChessPiece.top();
+		this->capturedChessPiece.pop();
+		if (cp) {
+			delete cp;
+		}
+	}
 }
 void GameManager::getPlayerInformation() {
 	int mode;
@@ -227,7 +234,11 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 			undo_his.pop();
 		}
 		while (undo_capture.size() > 0) {
+			ChessPiece* cp=undo_capture.top();
 			undo_capture.pop();
+			if(cp){
+				delete cp;
+			}
 		}
 	}
 	switch (choice) {
@@ -310,7 +321,7 @@ void GameManager::handle() {
 	else {
 		winner = this->player1;
 	}
-	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
+	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
 	cout << "Replay the game: \n";
 	int choice;
 	cout << "1.Yes\n";
@@ -318,12 +329,12 @@ void GameManager::handle() {
 	do {
 		cout << "Your choice\n";
 		cin >> choice;
-	} while (choice != 0 && choice != 1);
+	} while (choice != 2 && choice != 1);
 	system("cls");
 	if (choice == 1) {
 		this->Replay();
 		this->cb->Print();
-		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl;
+		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
 	}
 
 }
