@@ -2,6 +2,7 @@
 #define _HARDCOMPUTER_H
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 #include "Player.h"
 using namespace std;
 class HardComputer :public Player {

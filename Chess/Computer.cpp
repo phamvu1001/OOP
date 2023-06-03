@@ -9,11 +9,14 @@ void Computer::selectChessPieceAndDest(ChessBoard* cb, int& srcRow, int& srcCol,
 		for (int j = 7; j >= 0; j--)
 		{
 			ChessPiece* currentPiece = cb->cp[i][j];
+			//check if the ChessPiece at position (i,j) belong to to Computer
 			if (currentPiece != NULL && currentPiece->getColor() == this->color) {
+				//find legal and valid move
 				for (int k = 7; k >= 0; k--)
 				{
 					for (int l = 7; l >= 0; l--)
 					{
+						//check if the move is legal and valid or not
 						ChessPiece* dest = cb->cp[k][l];
 						bool LegalMove = cb->cp[i][j]->isLegalMove(i, j, k, l,cb->cp);
 						cb->cp[k][l] = currentPiece;
@@ -32,6 +35,7 @@ void Computer::selectChessPieceAndDest(ChessBoard* cb, int& srcRow, int& srcCol,
 
 		}
 	}
+	//get a random move
 	srand(time(0));
 	int index = rand() % validmove.size() + 0;
 	int chosen = *(validmove.begin() + index);

@@ -2,6 +2,9 @@
 int Castle::getValue() {
 	return 40;
 }
+char Castle::getPiece() {
+	return 'C';
+}
 bool Castle::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPiece* cp[8][8]) {
 	ChessPiece* dest = cp[destRow][destCol];
 	// trường hợp ô đi đến là quân cờ cùng màu

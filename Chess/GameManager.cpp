@@ -2,10 +2,13 @@
 GameManager::GameManager() {
 	this->mode = 0;
 	this->player1 = this->player2 = NULL;
+	//create a new ChessBoard
 	this->cb = new ChessBoard;
+	//the first turn is always White
 	this->turn = 'W';
 }
 GameManager::~GameManager() {
+	//delete ChessBoard
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			if (this->cb->cp[i][j] != NULL) {
@@ -13,12 +16,14 @@ GameManager::~GameManager() {
 			}
 		}
 	}
+	//delete 2 player
 	if (this->player1 != NULL) {
 		delete this->player1;
 	}
 	if (this->player2 != NULL) {
 		delete this->player2;
 	}
+	//delete stack capturedChessPiece
 	while (this->capturedChessPiece.size() > 0) {
 		ChessPiece* cp = this->capturedChessPiece.top();
 		this->capturedChessPiece.pop();
@@ -28,6 +33,7 @@ GameManager::~GameManager() {
 	}
 }
 void GameManager::getPlayerInformation() {
+	//check if exist last game
 	int mode;
 	int status = 1;
 	ifstream fi("lastgame.txt");
@@ -35,17 +41,28 @@ void GameManager::getPlayerInformation() {
 		fi >> status;
 		fi.close();
 	}
-	system("cls");
-	do {
-		cout << "Mode: \n";
-		cout << "1. Two players\n";
-		cout << "2. Computer(Easy)\n";
-		cout << "3. Computer(Hard)\n";
-		if (status == 0)
+	if (status == 0) {
+		do {
+			system("cls");
+			cout << "Mode: \n";
+			cout << "1. Two players\n";
+			cout << "2. Computer(Easy)\n";
+			cout << "3. Computer(Hard)\n";
 			cout << "4. Last game\n";
-		cout << "Your choice: ";
-		cin >> mode;
-	} while (mode < 1 || mode>4);
+			cout << "Your choice: ";
+			cin >> mode;
+		} while (mode < 1 || mode>4);
+	}
+	else {
+		do {
+			system("cls");
+			cout << "Mode: \n";
+			cout << "1. Two players\n";
+			cout << "2. Computer(Easy)\n";
+			cout << "3. Computer(Hard)\n";
+			cin >> mode;
+		} while (mode < 1 || mode>3);
+	}
 
 
 	switch (mode) {
@@ -115,12 +132,14 @@ void GameManager::getPlayerInformation() {
 	}
 	}
 }
+//get player has the same color with turn 
 Player* GameManager::getPlayerInTurn() {
 	if (this->player1->getColor() == this->turn) {
 		return this->player1;
 	}
 	return this->player2;
 }
+//change turn of game 
 void GameManager::changeTurn() {
 	if (this->turn == 'W') {
 		this->turn = 'B';
@@ -129,6 +148,7 @@ void GameManager::changeTurn() {
 		this->turn = 'W';
 	}
 }
+//check if game is over
 bool GameManager::IsGameOver() {
 	if (!this->cb->canMove(this->turn)) {
 		return 1;
@@ -138,6 +158,7 @@ bool GameManager::IsGameOver() {
 	}
 	return 0;
 }
+//check if a move make your King in check
 bool GameManager::IsSelfCheckMove(int srcrow, int srccol, int desrow, int descol) {
 	ChessPiece* cp = this->cb->cp[desrow][descol];
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
@@ -151,19 +172,21 @@ bool GameManager::IsSelfCheckMove(int srcrow, int srccol, int desrow, int descol
 	this->cb->cp[desrow][descol] = cp;
 	return 0;
 }
+//Move ChessPiece in chessboard
 void GameManager::Move(int srcrow, int srccol, int desrow, int descol) {
 	int move = 0;
 	this->capturedChessPiece.push(this->cb->cp[desrow][descol]);
 
 	this->cb->cp[desrow][descol] = this->cb->cp[srcrow][srccol];
 	this->cb->cp[srcrow][srccol] = NULL;
-
+	//save move history and the ChessPiece at destination 
 	bool queenPromote = this->QueenPromotion(desrow, descol);
 	if (queenPromote) {
 		move = 1;
 	}
 	this->move_his.push(move * 10000 + srcrow * 1000 + srccol * 100 + desrow * 10 + descol);
 }
+//Promote Queen for a Pawn
 bool GameManager::QueenPromotion(int row, int col) {
 	if (row != 0 && row != 7) {
 		return 0;
@@ -176,27 +199,33 @@ bool GameManager::QueenPromotion(int row, int col) {
 	this->cb->cp[row][col] = new Queen(color);
 	return 1;
 }
+//Undo
 void GameManager::Undo(stack<int>& undo_his, stack <ChessPiece*>& undo_capture) {
 	if (this->move_his.size() == 0) {
 		return;
 	}
+	//back to the last turn
 	this->changeTurn();
-
+	//get top value of move_his 
 	int step = this->move_his.top();
 	this->move_his.pop();
 	undo_his.push(step);
 	int move = step / 10000;
 	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
 	if (move == 0) {
+		//bring the ChessPiece at destination to source
 		this->cb->cp[srcrow][srccol] = this->cb->cp[desrow][descol];
+		//brring the ChessPiece in capturedChessPiece to destination and pop it
 		this->cb->cp[desrow][descol] = this->capturedChessPiece.top();
 		undo_capture.push(this->capturedChessPiece.top());
 		this->capturedChessPiece.pop();
 		return;
 	}
+	//if the last move had promoted a queen
 	if (move == 1) {
 		ChessPiece* piece = this->capturedChessPiece.top();
 		this->capturedChessPiece.pop();
+		//delete the Queen and fill in by a Pawn
 		delete this->cb->cp[desrow][descol];
 		this->cb->cp[srcrow][srccol] = new Pawn(this->turn);
 		this->cb->cp[desrow][descol] = piece;
@@ -209,10 +238,14 @@ void GameManager::Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture)
 	if (undo_his.size() == 0) {
 		return;
 	}
+	//change turn
 	this->changeTurn();
+	//calculate the next move
 	int step = undo_his.top();
 	undo_his.pop();
+	//pop 
 	undo_capture.pop();
+	//make the move
 	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
 	this->Move(srcrow, srccol, desrow, descol);
 }
@@ -227,7 +260,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 		cout << "Your choice: ";
 		cin >> choice;
 	} while (choice > 3 || choice < 1);
-
+	//if the player chose move clear 2 stack undo_his and undo_capture
 	if (choice == 3) {
 		while (undo_his.size() > 0) {
 			undo_his.pop();
@@ -243,6 +276,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 	switch (choice) {
 	case 3: {
 		bool LegalMove, SelfCheckMove;
+		//print if the king in check
 		if (this->cb->isInCheck(player->getColor())) {
 			cout << "Your king is in check!!\n";
 		}
@@ -276,6 +310,7 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 
 }
 void GameManager::Replay() {
+	//delete stack captured_ChessPiece
 	stack <int>move;
 	while (this->capturedChessPiece.size() > 0) {
 		ChessPiece* cp = this->capturedChessPiece.top();
@@ -284,10 +319,12 @@ void GameManager::Replay() {
 			delete cp;
 		}
 	}
+	//save move_his in another stack
 	while (this->move_his.size() > 0) {
 		move.push(this->move_his.top());
 		this->move_his.pop();
 	}
+	//make a new ChessBoard
 	delete this->cb;
 	this->cb = new ChessBoard;
 	while (move.size() > 0) {
@@ -423,6 +460,48 @@ bool GameManager::ReadLastGame(string fileName)
 			j++;;
 		}
 	}
+	int size;
+	stack<int> move = this->move_his;
+	stack<ChessPiece*> cp;
+	fi >> size;
+	for (int i = 0; i < size; i++) {
+		int step;
+		fi >> step;
+		move.push(step);
+	}
+	for (int i = 0; i < size; i++) {
+		string temp2;
+		fi >> temp2;
+		if (temp2 != "0")
+		{
+			char color = temp2[0];
+			char piece = temp2[1];
+			if (piece == 'C')
+				cp.push(new Castle(color));
+			else if (piece == 'N')
+				cp.push( new Knight(color));
+			else if (piece == 'Q')
+				cp.push(new Queen(color));
+			else if (piece == 'K')
+				cp.push( new King(color));
+			else if (piece == 'B')
+				cp.push(new Bishop(color));
+			else if (piece == 'P')
+				cp.push(new Pawn(color));
+		}
+		else
+		{
+			cp.push( NULL);
+		}
+	}
+	while (move.size() > 0) {
+		this->move_his.push(move.top());
+		move.pop();
+	}
+	while (cp.size() > 0) {
+		this->capturedChessPiece.push(cp.top());
+		cp.pop();
+	}
 	fi.close();
 	return 1;
 }
@@ -459,6 +538,25 @@ bool GameManager::Save(bool status, string fileName)
 			else fo << "0" << " ";
 		}
 		fo << endl;
+	}
+	//save 2 stack to save history
+	stack<int> move = this->move_his;
+	stack<ChessPiece*> cp = this->capturedChessPiece;
+	fo << move.size() << endl;
+	while (move.size() > 0) {
+		fo << move.top() << " ";
+		move.pop();
+	}
+	fo << endl;
+	while (cp.size() > 0) {
+		ChessPiece* p = cp.top();
+		if (p) {
+			fo << p->getColor() << p->getPiece() << " ";
+		}
+		else {
+			fo << "0" << " ";
+		}
+		cp.pop();
 	}
 	fo.close();
 	return 1;
