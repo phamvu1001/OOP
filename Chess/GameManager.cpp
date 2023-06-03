@@ -211,7 +211,6 @@ void GameManager::Redo(stack <int>& undo_his, stack <ChessPiece*>& undo_capture)
 	}
 	this->changeTurn();
 	int step = undo_his.top();
-	cout << undo_his.size() << undo_capture.size() << endl;
 	undo_his.pop();
 	undo_capture.pop();
 	int srcrow = (step / 1000) % 10, srccol = (step / 100) % 10, desrow = (step / 10) % 10, descol = step % 10;
