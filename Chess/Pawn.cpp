@@ -18,7 +18,7 @@ bool Pawn::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPi
 					return true;
 				}
 				// trường hợp là nước đi đầu tiên của quân tốt đó -> được đi 2 bước
-				if (srcRow == 1 && destRow == srcRow + 2) {
+				if (srcRow == 1 && cp[srcRow + 1][srcCol] == 0 && destRow == srcRow + 2) {
 					return true;
 				}
 			}
@@ -30,7 +30,7 @@ bool Pawn::isLegalMove(int srcRow, int srcCol, int destRow, int destCol, ChessPi
 				}
 
 				// trường hợp là nước đi đầu tiên của quân tốt đó -> được đi 2 bước
-				if (srcRow == 6 && destRow == srcRow - 2) {
+				if (srcRow == 6 && cp[srcRow - 1][srcCol] == 0 && destRow == srcRow - 2) {
 					return true;
 				}
 			}
