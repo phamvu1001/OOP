@@ -29,7 +29,7 @@ GameManager::~GameManager() {
 }
 void GameManager::getPlayerInformation() {
 	int mode;
-	int status=1;
+	int status = 1;
 	ifstream fi("lastgame.txt");
 	if (fi) {
 		fi >> status;
@@ -233,9 +233,9 @@ void GameManager::displayTurn(stack <int>& undo_his, stack <ChessPiece*>& undo_c
 			undo_his.pop();
 		}
 		while (undo_capture.size() > 0) {
-			ChessPiece* cp=undo_capture.top();
+			ChessPiece* cp = undo_capture.top();
 			undo_capture.pop();
-			if(cp){
+			if (cp) {
 				delete cp;
 			}
 		}
@@ -308,7 +308,7 @@ void GameManager::handle() {
 	do {
 		this->cb->Print();
 		this->displayTurn(undo_his, undo_capture);
-		this->Save(0,"lastGame.txt");
+		this->Save(0, "lastGame.txt");
 		system("cls");
 	} while (!this->IsGameOver());
 	this->Save(1, "lastGame.txt");
@@ -320,7 +320,7 @@ void GameManager::handle() {
 	else {
 		winner = this->player1;
 	}
-	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
+	cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl << endl << endl;
 	cout << "Replay the game: \n";
 	int choice;
 	cout << "1.Yes\n";
@@ -333,12 +333,12 @@ void GameManager::handle() {
 	if (choice == 1) {
 		this->Replay();
 		this->cb->Print();
-		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl<<endl<<endl;
+		cout << "The winner is " << winner->getColor() << ": " << winner->getName() << endl << endl << endl;
 	}
 
 }
 
-bool GameManager::ReadLastGame( string fileName)
+bool GameManager::ReadLastGame(string fileName)
 {
 	ifstream fi(fileName);
 	//check if file not exist
@@ -349,7 +349,7 @@ bool GameManager::ReadLastGame( string fileName)
 	//check if the last game is over
 	int status;
 	fi >> status;
-	if (status == 1) 
+	if (status == 1)
 		return 0;
 	//delete chessboard
 	for (int i = 0; i < 8; i++) {
@@ -362,7 +362,7 @@ bool GameManager::ReadLastGame( string fileName)
 	}
 	//get mode of the last game
 	int mode;
-	fi>> mode;
+	fi >> mode;
 	this->mode = mode;
 	fi >> this->turn;
 	string temp;
@@ -420,22 +420,22 @@ bool GameManager::ReadLastGame( string fileName)
 			{
 				this->cb->cp[i][j] = NULL;
 			}
-				j++;;
+			j++;;
 		}
 	}
 	fi.close();
 	return 1;
 }
-bool GameManager::Save(bool status,string fileName)
+bool GameManager::Save(bool status, string fileName)
 {
 	ofstream fo(fileName);
 	if (!fo)
 	{
 		return 0;
 	}
-	if (status == 1) { 
-		fo << "1";  
-		return 1; 
+	if (status == 1) {
+		fo << "1";
+		return 1;
 	}
 	fo << status << endl;
 	fo << this->mode << endl;
